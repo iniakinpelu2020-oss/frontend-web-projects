@@ -1,6 +1,10 @@
-"main": "src/worker.js",
-"assets": {
-  "directory": "./dist",
-  "binding": "ASSETS",
-  "run_worker_first": ["/api/*"]
+{
+  "name": "apex-proxy",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-01",
+  "assets": {
+    "directory": "./dist",
+    "binding": "ASSETS",
+    "run_worker_first": ["/api/*"]
+  }
 }

@@ -2,10 +2,5 @@
   "name": "apex-proxy",
   "main": "src/worker.js",
   "compatibility_date": "2026-10-01",
-  "vars": { "FIREBASE_API_KEY": "AIzaSyAXSWi7f3tCMF_2cimrjnLo9j8BZb7Ckr0" },
-  "assets": {
-    "directory": "./dist",
-    "binding": "ASSETS",
-    "run_worker_first": true
-  }
+  "vars": { "FIREBASE_API_KEY": "AIzaSyAXSWi7f3tCMF_2cimrjnLo9j8BZb7Ckr0" }
 }

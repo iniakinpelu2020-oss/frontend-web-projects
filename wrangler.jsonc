@@ -2,7 +2,6 @@
   "name": "apex-proxy",
   "main": "src/index.js",
   "compatibility_date": "2026-10-30",
-  {
     "directory": "./public/"
   }
 }

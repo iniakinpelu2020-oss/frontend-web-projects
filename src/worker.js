@@ -10,7 +10,7 @@ export default {
       return new Response(null, { headers: CORS });
     }
     if (request.method !== "POST") {
-      return env.ASSETS.fetch(request);
+      return new Response("apex-proxy running");
     }
 
     const token = (request.headers.get("Authorization") || "").replace("Bearer ", "");

@@ -2,6 +2,13 @@ const PROJECT_ID = "apex-ai-1a873";
 const JWKS_URL =
   "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
 
+const ALLOWED_MODELS = [
+  "meta-llama/llama-3.3-70b-instruct",
+  "deepseek/deepseek-chat",
+  "qwen/qwen-2.5-72b-instruct",
+  "mistralai/mixtral-8x22b-instruct",
+];
+
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",
@@ -57,13 +64,28 @@ export default {
       return new Response("Unauthorized", { status: 403, headers: CORS });
     }
 
+    let payload;
+    try { payload = await request.json(); }
+    catch (e) { return new Response("Bad request", { status: 400, headers: CORS }); }
+
+    if (!ALLOWED_MODELS.includes(payload.model) || !Array.isArray(payload.messages)) {
+      return new Response("Model not allowed", { status: 400, headers: CORS });
+    }
+    if (JSON.stringify(payload.messages).length > 200000) {
+      return new Response("Message too large", { status: 413, headers: CORS });
+    }
+
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "Authorization": `Bearer ${env.OPENROUTER_API_KEY}`,
       },
-      body: request.body,
+      body: JSON.stringify({
+        model: payload.model,
+        messages: payload.messages,
+        max_tokens: Math.min(Number(payload.max_tokens) || 3000, 3000),
+      }),
     });
     return new Response(res.body, {
       status: res.status,

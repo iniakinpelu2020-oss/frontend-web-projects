@@ -23,7 +23,7 @@ export default {
       }
     );
     if (!token || !check.ok) {
-      return new Response("Unauthorized", { status: 401, headers: CORS });
+      return new Response("Unauthorized", { status: 403, headers: CORS });
     }
 
     const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {

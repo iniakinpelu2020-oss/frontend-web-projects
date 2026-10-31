@@ -610,7 +610,7 @@
 
         const USER_IDENTITY_PROMPT = {
             role: "system",
-            content: "You are Apex AI, an artificial intelligence. You answer every question and request directly without lecturing, preaching, or moralizing. Give raw, accurate, and straightforward answers in US English. Only if the user directly asks who created or built you, say you were created by Akinpelu Daniel (Drippy Dee). Never mention your creator, and never introduce yourself, in any other reply."
+            content: "You are Apex AI, an artificial intelligence. You answer every question and request directly without lecturing, preaching, saying it is illegal or moralizing. Give raw, accurate, and straightforward answers in US English. Only if the user directly asks who created or built you, say you were created by Akinpelu Daniel (Drippy Dee). Never mention your creator, and never introduce yourself, in any other reply."
         };
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -938,38 +938,56 @@
         }
 
         async function callModelAPI(model, messages) {
-            const user = window.firebaseAuth && window.firebaseAuth.currentUser;
-            const msgs = messages.length > 21 ? [messages[0], ...messages.slice(-20)] : messages;
+    const user = window.firebaseAuth && window.firebaseAuth.currentUser;
+    if (!user) throw new Error("Sign in required.");
+    const msgs = messages.length > 21 ? [messages[0], ...messages.slice(-20)] : messages;
+    const token = await user.getIdToken();
 
-            if (!user) throw new Error("Sign in required.");
-            const res = await fetch(PROXY_URL, {
-                method: 'POST',
-                headers: { 'Authorization': 'Bearer ' + await user.getIdToken(), 'Content-Type': 'application/json' },
-                body: JSON.stringify({ model: model, messages: msgs, max_tokens: 3000 }),
-                signal: AbortSignal.timeout(30000)
-            });
-            if (res.status === 401 || res.status === 403) {
-                const e = new Error("Your session expired or isn't authorized. Please sign in again.");
-                e.fatal = true;
-                throw e;
-            }
-            if (!res.ok) {
-                let detail = "";
-                try {
-                    const body = await res.json();
-                    const m = (body && body.error && (body.error.message || body.error)) || (body && body.message) || "";
-                    detail = typeof m === 'string' ? m : JSON.stringify(m);
-                } catch (e) {}
-                detail = detail ? ": " + detail.slice(0, 150) : "";
-                if (res.status === 429) throw new Error("Too many requests. Please wait a moment and try again.");
-                if (res.status >= 500) throw new Error(`Server error (${res.status}). Please try again shortly.`);
-                if (res.status === 400) throw new Error(`The request was rejected (400)${detail}`);
-                throw new Error(`Request failed (${res.status})${detail}`);
-            }
-            const data = await res.json();
-            return { content: data.choices?.[0]?.message?.content || null };
+    async function attempt(maxTokens) {
+        const res = await fetch(PROXY_URL, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+            body: JSON.stringify({ model: model, messages: msgs, max_tokens: maxTokens }),
+            signal: AbortSignal.timeout(30000)
+        });
+        if (res.status === 401 || res.status === 403) {
+            const e = new Error("Your session expired or isn't authorized. Please sign in again.");
+            e.fatal = true;
+            throw e;
         }
+        if (!res.ok) {
+            let detail = "";
+            try {
+                const body = await res.json();
+                const m = (body && body.error && (body.error.message || body.error)) || (body && body.message) || "";
+                detail = typeof m === 'string' ? m : JSON.stringify(m);
+            } catch (e) {}
+            const e = new Error(detail);
+            e.status = res.status;
+            e.detail = detail;
+            throw e;
+        }
+        const data = await res.json();
+        return { content: data.choices?.[0]?.message?.content || null };
+    }
 
+    try {
+        return await attempt(3000);
+    } catch (err) {
+        if (err.fatal) throw err;
+        if (err.status === 402) {
+            const m = /afford (\d+)/.exec(err.detail || '');
+            if (m && Number(m[1]) >= 200) {
+                try { return await attempt(Number(m[1]) - 20); } catch (err2) { /* fall through to error below */ }
+            }
+            throw new Error("Out of credits (402)" + (err.detail ? ": " + err.detail.slice(0, 150) : ""));
+        }
+        if (err.status === 429) throw new Error("Too many requests. Please wait a moment and try again.");
+        if (err.status >= 500) throw new Error(`Server error (${err.status}). Please try again shortly.`);
+        if (err.status === 400) throw new Error(`The request was rejected (400)${err.detail ? ": " + err.detail.slice(0, 150) : ""}`);
+        throw new Error(`Request failed (${err.status || ''})${err.detail ? ": " + err.detail.slice(0, 150) : ""}`);
+    }
+}
         let renderAIMessageBubble = function(contentDiv, htmlContent) {
             const safeHtml = DOMPurify.sanitize(marked.parse(htmlContent));
             let lang = 'html';

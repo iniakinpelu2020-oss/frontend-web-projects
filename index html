@@ -879,6 +879,12 @@ const EMPATH_PROMPT = {
 
             let displayHtml = escapeHtml(query);
             let apiContent = query;
+if (/\b(news|today|latest|current|right now|this week|this year|2026|price of|weather|who is the|what happened)\b/i.test(query)) {
+    const results = await webSearch(query);
+    if (results.length) {
+        apiContent += "\n\n[Web search results:\n" + results.map(r => `- ${r.title}: ${r.snippet} (${r.url})`).join("\n") + "]";
+    }
+}
 
             if (attachedFiles.length > 0) {
                 let attSummary = "\n\n[Attachments:\n";

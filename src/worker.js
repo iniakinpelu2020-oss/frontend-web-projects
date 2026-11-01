@@ -3,12 +3,11 @@ const JWKS_URL =
   "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
 
 const ALLOWED_MODELS = [
+    'openai/gpt-oss-120b',
+    'nvidia/nemotron-3-super-120b-a12b',
     'google/gemma-4-31b-it:free',
-    'openai/gpt-oss-120b:free',
-    'nvidia/nemotron-3-super-120b-a12b:free',
     'openrouter/free'
 ];
-
 const CORS = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "POST, OPTIONS",

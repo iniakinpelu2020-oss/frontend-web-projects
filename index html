@@ -608,11 +608,18 @@
 
         const PROXY_URL = "https://apex-proxy.iniakinpelu2020.workers.dev"; 
         const ENSEMBLE_MODELS = [
-            'meta-llama/llama-3.3-70b-instruct',
-            'deepseek/deepseek-chat',
-            'qwen/qwen-2.5-72b-instruct',
-            'mistralai/mixtral-8x22b-instruct'
-        ];
+    'openai/gpt-oss-20b:free',
+    'openai/gpt-oss-120b:free',
+    'google/gemma-4-31b-it:free',
+    'qwen/qwen3-coder:free',
+    'nvidia/nemotron-3.5-lightning:free',
+    'nvidia/nemotron-3-ultra-550b-a55b:free',
+    'nvidia/nemotron-3-super-120b-a12b:free',
+    'poolside/laguna-s-2.1:free',
+    'inclusionai/ling-3.1-flash',
+    'stealth/space-bunny-alpha',
+    'openrouter/free'
+];
 
         /* ========================================================================
            SYSTEM PROMPT (With Auto-Translate & Memory Support)

@@ -3,16 +3,9 @@ const JWKS_URL =
   "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
 
 const ALLOWED_MODELS = [
-    'openai/gpt-oss-20b:free',
-    'openai/gpt-oss-120b:free',
     'google/gemma-4-31b-it:free',
-    'qwen/qwen3-coder:free',
-    'nvidia/nemotron-3.5-lightning:free',
-    'nvidia/nemotron-3-ultra-550b-a55b:free',
+    'openai/gpt-oss-120b:free',
     'nvidia/nemotron-3-super-120b-a12b:free',
-    'poolside/laguna-s-2.1:free',
-    'inclusionai/ling-3.1-flash',
-    'stealth/space-bunny-alpha',
     'openrouter/free'
 ];
 

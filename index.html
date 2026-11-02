@@ -1108,10 +1108,10 @@ if (attachedFiles.length > 0) {
                     body: JSON.stringify({ 
                         model: model, 
                         messages: msgs, 
-                        max_tokens: maxTokens, 
+                        ...(maxTokens ? { max_tokens: maxTokens } : {}),
                         web: useWeb 
                     }),
-                    signal: AbortSignal.timeout(45000)
+                    signal: AbortSignal.timeout(90000)
                 });
                 if (res.status === 401 || res.status === 403) {
                     const e = new Error("Your session expired or isn't authorized. Please sign in again.");
@@ -1134,8 +1134,8 @@ if (attachedFiles.length > 0) {
                 return { content: data.choices?.[0]?.message?.content || null };
             }
 
-            try {
-                return await attempt(3000);
+            try {                
+                return await attempt(0);
             } catch (err) {
                 if (err.fatal) throw err;
                 if (err.status === 402) {

@@ -899,10 +899,23 @@ function buildFollowUpPrompt(query, sentiment, domain) {
                     continue;
                 }
                 const reader = new FileReader();
-                if (file.size > 200 * 1024) {
-                    showModal("File Too Large", file.name + " is over 200 KB. Please upload a smaller text or code file.");
-                    continue;
-                }
+                if (file.type === 'application/pdf') {
+    showModal("Unsupported File Type", "PDFs are not supported yet. Please upload an image or text/code file.");
+    continue;
+}
+if (file.type.startsWith('image/')) {
+    if (file.size > 4 * 1024 * 1024) {
+        showModal("Image Too Large", file.name + " is over 4MB. Please use a smaller image.");
+        continue;
+    }
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+        attachedFiles.push({ name: file.name, type: file.type, isImage: true, content: evt.target.result });
+        renderFilePreviews();
+    };
+    reader.readAsDataURL(file);
+    continue;
+}
                 reader.onload = (evt) => {
                     if (/\u0000/.test(evt.target.result)) {
                         showModal("Unsupported File", file.name + " looks like a binary file. Please upload text or code files.");
@@ -958,6 +971,12 @@ function buildFollowUpPrompt(query, sentiment, domain) {
 
     let displayHtml = escapeHtml(query);
     let apiContent = query;
+if (/\b(news|today|latest|current|right now|this week|this year|2026|price of|weather|who is the|what happened)\b/i.test(query)) {
+    const results = await webSearch(query);
+    if (results.length) {
+        apiContent += "\n\n[Web search results:\n" + results.map(r => `- ${r.title}: ${r.snippet} (${r.url})`).join("\n") + "]";
+    }
+}
 
     apiContent = `${nlpContext}\n\n${followUpSuggestion}\n\nUser request:\n${apiContent}`;
 
@@ -970,15 +989,22 @@ function buildFollowUpPrompt(query, sentiment, domain) {
     }
 
 
-            if (attachedFiles.length > 0) {
-                let attSummary = "\n\n[Attachments:\n";
-                for (let f of attachedFiles) { attSummary += `- ${f.name}\n\`\`\`\n${f.content}\n\`\`\`\n`; }
-                attSummary += "]";
-                apiContent += attSummary;
-                attachedFiles = [];
-                renderFilePreviews();
-            }
-
+          ilet imageAttachments = [];
+if (attachedFiles.length > 0) {
+    let attSummary = "\n\n[Attachments:\n";
+    for (let f of attachedFiles) {
+        if (f.isImage) {
+            imageAttachments.push(f.content);
+            attSummary += `- ${f.name} (image attached)\n`;
+        } else {
+            attSummary += `- ${f.name}\n\`\`\`\n${f.content}\n\`\`\`\n`;
+        }
+    }
+    attSummary += "]";
+    apiContent += attSummary;
+    attachedFiles = [];
+    renderFilePreviews();
+}
             appendUserMessage(displayHtml);
 
             const targetLang = document.getElementById('targetLanguage').value;
@@ -992,8 +1018,17 @@ function buildFollowUpPrompt(query, sentiment, domain) {
             } else {
                 chatHistory[0] = await getActiveSystemPromptWithMemory();
             }
-            chatHistory.push({ role: 'user', content: apiContent });
-
+        if (imageAttachments.length > 0) {
+    chatHistory.push({
+        role: 'user',
+        content: [
+            { type: 'text', text: apiContent },
+            ...imageAttachments.map(img => ({ type: 'image_url', image_url: { url: img } }))
+        ]
+    });
+} else {
+    chatHistory.push({ role: 'user', content: apiContent });
+}
             const container = document.getElementById('chatMessages');
             const aiMsgId = 'ai-msg-' + Date.now();
             const div = document.createElement('div');
@@ -1024,7 +1059,7 @@ function buildFollowUpPrompt(query, sentiment, domain) {
                 let success = false;
                 for (const model of ENSEMBLE_MODELS) {
                     try {
-                        const resp = await callModelAPI(model, chatHistory);
+                        const resp = await callModelAPI(model, chatHistory, needsSearch);
                         if (resp && resp.content && resp.content.trim().length > 0) {
                             finalAnswer = resp.content;
                             success = true;
@@ -1068,13 +1103,13 @@ function buildFollowUpPrompt(query, sentiment, domain) {
             }
         }
 
-        async function callModelAPI(model, messages) {
+        async function callModelAPI(model, messages, useWeb) {
             const user = window.firebaseAuth && window.firebaseAuth.currentUser;
             if (!user) throw new Error("Sign in required.");
             const msgs = messages.length > 21 ? [messages[0], ...messages.slice(-20)] : messages;
             const token = await user.getIdToken();
 
-            async function attempt(maxTokens) {
+            async function attempt(maxTokens, useWeb) {
                 const res = await fetch(PROXY_URL, {
                     method: 'POST',
                     headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
@@ -1082,7 +1117,7 @@ function buildFollowUpPrompt(query, sentiment, domain) {
                         model: model, 
                         messages: msgs, 
                         max_tokens: maxTokens, 
-                        web: liveWebSearchEnabled 
+                        web: useWeb 
                     }),
                     signal: AbortSignal.timeout(45000)
                 });

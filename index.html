@@ -698,12 +698,9 @@ function buildFollowUpPrompt(query, sentiment, domain) {
 
         const PROXY_URL = "https://apex-proxy.iniakinpelu2020.workers.dev"; 
         const ENSEMBLE_MODELS = [
-            'meta-llama/llama-3.3-70b-instruct',
-            'deepseek/deepseek-chat',
-            'qwen/qwen-2.5-72b-instruct',
-            'mistralai/mixtral-8x22b-instruct'
-        ];
-
+    'google/gemma-4-31b-it:free',
+    'openrouter/free'
+];
         /* ========================================================================
            SYSTEM PROMPT (With Auto-Translate & Memory Support)
            ======================================================================== */

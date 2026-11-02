@@ -969,14 +969,9 @@ if (file.type.startsWith('image/')) {
     const nlpContext = buildNLPContextEnhancer(query, recentHistory);
     const followUpSuggestion = buildFollowUpPrompt(query, sentiment, domain);
 
-    let displayHtml = escapeHtml(query);
-    let apiContent = query;
-if (/\b(news|today|latest|current|right now|this week|this year|2026|price of|weather|who is the|what happened)\b/i.test(query)) {
-    const results = await webSearch(query);
-    if (results.length) {
-        apiContent += "\n\n[Web search results:\n" + results.map(r => `- ${r.title}: ${r.snippet} (${r.url})`).join("\n") + "]";
-    }
-}
+   let displayHtml = escapeHtml(query);
+let apiContent = query;
+const needsSearch = /\b(news|today|latest|current|recent|right now|this week|this year|who is|what is the current|stock price|weather)\b/i.test(query);
 
     apiContent = `${nlpContext}\n\n${followUpSuggestion}\n\nUser request:\n${apiContent}`;
 
@@ -989,7 +984,7 @@ if (/\b(news|today|latest|current|right now|this week|this year|2026|price of|we
     }
 
 
-          ilet imageAttachments = [];
+          let imageAttachments = [];
 if (attachedFiles.length > 0) {
     let attSummary = "\n\n[Attachments:\n";
     for (let f of attachedFiles) {

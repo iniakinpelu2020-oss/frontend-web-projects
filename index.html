@@ -127,18 +127,6 @@
         <!-- Sidebar Content -->
         <div class="flex-1 overflow-y-auto p-4 space-y-4">
 
-            <!-- Live Internet Search Toggle -->
-            <div class="space-y-2 bg-slate-900/80 border border-slate-800 rounded-2xl p-3.5 flex items-center justify-between">
-                <div>
-                    <label class="text-[11px] font-bold text-slate-300 uppercase tracking-wider block">Live Web Search</label>
-                    <span class="text-[10px] text-slate-500">OpenRouter plugin search</span>
-                </div>
-                <button id="webSearchToggleBtn" onclick="toggleWebSearch()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-mono font-bold rounded-lg border border-slate-700 transition-colors flex items-center gap-1.5">
-                    <span id="webDot" class="w-2 h-2 rounded-full bg-slate-600"></span>
-                    <span>OFF</span>
-                </button>
-            </div>
-
             <!-- Chat History Panel -->
             <div class="space-y-3 bg-slate-900/60 border border-slate-800 rounded-2xl p-3">
                 <div class="flex justify-between items-center">
@@ -217,32 +205,9 @@
             <div class="flex items-start gap-3.5">
                 <div class="w-8 h-8 rounded-xl bg-gradient-to-tr from-violet-600 to-cyan-500 text-white flex items-center justify-center font-bold text-xs flex-shrink-0 shadow-md">AI</div>
                 <div class="bg-apexPanel border border-slate-800 rounded-2xl p-5 text-xs text-slate-200 leading-relaxed max-w-[85%] shadow-xl space-y-3">
-                    <p class="font-bold text-violet-300 text-sm">The Apex Ai⚡ Online ⚡</p>
-                    <p>Ready when you are. Ask me anything, argue with me about something, or just see what I've got. 👇</p>
+                    <p class="font-bold text-violet-300 text-sm">The Apex Ai⚡</p>
+                    <p>Ready when you are. Ask me anything, argue with me about something.</p>
                     
-                    <!-- Quick Prompt Cards -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-2">
-                        <button onclick="sendQuickPrompt('What are the latest breaking tech news headlines right now?')" class="p-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-left transition-all group">
-                            <div class="font-bold text-white group-hover:text-cyan-400">🌐 Web Search Plugin</div>
-                            <div class="text-[10px] text-slate-400">Toggle web search ON for live news</div>
-                        </button>
-                        <button onclick="sendQuickPrompt('Summarize recent artificial intelligence milestones into 3 concise bullet points.')" class="p-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-left transition-all group">
-                            <div class="font-bold text-white group-hover:text-violet-400">📝 Summarization</div>
-                            <div class="text-[10px] text-slate-400">Condense long text blocks instantly</div>
-                        </button>
-                        <button onclick="sendQuickPrompt('Can you find and map directions to Central Park?')" class="p-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-left transition-all group">
-                            <div class="font-bold text-white group-hover:text-pink-400">🗺️ Maps Navigation</div>
-                            <div class="text-[10px] text-slate-400">Generate google maps links</div>
-                        </button>
-                        <button onclick="sendQuickPrompt('Hola, ¿cómo estás hoy? Responde en español.')" class="p-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700/80 rounded-xl text-left transition-all group">
-                            <div class="font-bold text-white group-hover:text-emerald-400">🌍 Auto-Translation</div>
-                            <div class="text-[10px] text-slate-400">Writes back in your input language</div>
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <!-- Chat Input Form -->
         <div class="absolute bottom-4 left-0 right-0 px-4 md:px-8 pointer-events-none z-20">
             <div class="max-w-4xl mx-auto pointer-events-auto">
@@ -606,6 +571,131 @@
 
         let liveWebSearchEnabled = false;
 
+const NLP_TRAINING_HINTS = {
+    idioms: {
+        "hit the books": "study seriously",
+        "under the weather": "feeling sick",
+        "piece of cake": "easy",
+        "break the ice": "start a conversation",
+        "in hot water": "in trouble",
+        "on the same page": "agreeing / aligned",
+        "cost an arm and a leg": "very expensive",
+        "keep an eye on": "monitor carefully",
+        "barking up the wrong tree": "pursuing a wrong idea",
+        "spill the beans": "reveal a secret"
+    },
+    domainSignals: {
+        health: ["doctor", "symptom", "diagnosis", "prescription", "medication", "therapy", "migraine", "infection", "blood pressure", "covid"],
+        legal: ["lawyer", "contract", "lawsuit", "liability", "court", "rights", "legal", "compliance", "estate", "tenant"],
+        finance: ["investment", "stock", "budget", "loan", "mortgage", "bank", "tax", "revenue", "portfolio", "inflation"],
+        education: ["assignment", "grade", "exam", "study", "school", "course", "math", "essay", "homework"],
+        coding: ["javascript", "debug", "api", "server", "frontend", "react", "node", "bug", "deploy", "function"]
+    }
+};
+
+function normalizeText(text) {
+    return String(text || "").toLowerCase().replace(/\s+/g, " ").trim();
+}
+
+function detectSentiment(text) {
+    const positiveWords = ["happy", "excited", "love", "great", "good", "thanks", "appreciate", "amazing", "confident"];
+    const negativeWords = ["angry", "frustrated", "sad", "upset", "worried", "annoyed", "stuck", "confused", "hate", "bad", "terrible"];
+    const sarcasmWords = ["yeah right", "sure", "obviously", "as if", "great job", "fantastic", "lovely"];
+
+    const t = normalizeText(text);
+    let score = 0;
+
+    positiveWords.forEach(w => { if (t.includes(w)) score += 1; });
+    negativeWords.forEach(w => { if (t.includes(w)) score -= 1; });
+    sarcasmWords.forEach(w => { if (t.includes(w)) score -= 1; });
+
+    if (score > 0) return "positive";
+    if (score < 0) return "negative";
+    return "neutral";
+}
+
+function detectIdioms(text) {
+    const t = normalizeText(text);
+    const matches = [];
+    for (const [phrase, meaning] of Object.entries(NLP_TRAINING_HINTS.idioms)) {
+        if (t.includes(phrase)) {
+            matches.push(`${phrase} => ${meaning}`);
+        }
+    }
+    return matches;
+}
+
+function detectDomain(text) {
+    const t = normalizeText(text);
+    let detected = null;
+    let highestScore = 0;
+
+    for (const [domain, terms] of Object.entries(NLP_TRAINING_HINTS.domainSignals)) {
+        let score = 0;
+        terms.forEach(term => {
+            if (t.includes(term)) score += 1;
+        });
+        if (score > highestScore) {
+            highestScore = score;
+            detected = domain;
+        }
+    }
+
+    return highestScore > 0 ? detected : "general";
+}
+
+function buildNLPContextEnhancer(query, recentHistory = []) {
+    const normalized = normalizeText(query);
+    const idioms = detectIdioms(normalized);
+    const sentiment = detectSentiment(normalized);
+    const domain = detectDomain(normalized);
+
+    let enhancer = "";
+
+    if (idioms.length) {
+        enhancer += `The user may be using idiomatic or colloquial phrasing. Interpret them as: ${idioms.join("; ")}. `;
+    }
+
+    if (sentiment !== "neutral") {
+        enhancer += `The overall emotional tone appears ${sentiment}. Respond with appropriate empathy and tone. `;
+    }
+
+    if (domain !== "general") {
+        enhancer += `This looks like a ${domain}-related request. Use domain-aware reasoning and be careful with factual precision. `;
+    }
+
+    if (recentHistory.length) {
+        const lastTurns = recentHistory.slice(-3).map(m => `${m.role}: ${m.content}`).join("\n");
+        enhancer += `Recent conversation context:\n${lastTurns}\n`;
+    }
+
+    return enhancer.trim();
+}
+
+function buildFollowUpPrompt(query, sentiment, domain) {
+    const followUps = {
+        general: [
+            "Would you like me to dig deeper into this topic?",
+            "Do you want a short answer, a detailed breakdown, or a practical example?"
+        ],
+        health: [
+            "Are you looking for general information, or do you need help deciding whether to seek medical advice?"
+        ],
+        legal: [
+            "Do you need general legal information, or are you trying to understand a specific contract or legal issue?"
+        ],
+        finance: [
+            "Are you looking for a quick explanation, a decision recommendation, or a detailed breakdown?"
+        ]
+    };
+
+    const options = followUps[domain] || followUps.general;
+    const pick = options[Math.floor(Math.random() * options.length)];
+    return sentiment === "negative"
+        ? `The user seems stressed or unhappy. Offer reassurance and ask a clarifying question: "${pick}"`
+        : `If the request is ambiguous, ask a helpful follow-up: "${pick}"`;
+}
+
         const PROXY_URL = "https://apex-proxy.iniakinpelu2020.workers.dev"; 
         const ENSEMBLE_MODELS = [
             'meta-llama/llama-3.3-70b-instruct',
@@ -853,15 +943,32 @@
         }
 
         async function processChatSubmit() {
-            const inputEl = document.getElementById('chatInput');
-            let query = inputEl.value.trim();
-            if (!query && attachedFiles.length === 0) return;
+    const inputEl = document.getElementById('chatInput');
+    let query = inputEl.value.trim();
+    if (!query && attachedFiles.length === 0) return;
 
-            inputEl.value = '';
-            inputEl.style.height = 'auto';
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
 
-            let displayHtml = escapeHtml(query);
-            let apiContent = query;
+    const recentHistory = chatHistory.slice(-6);
+    const sentiment = detectSentiment(query);
+    const domain = detectDomain(query);
+    const nlpContext = buildNLPContextEnhancer(query, recentHistory);
+    const followUpSuggestion = buildFollowUpPrompt(query, sentiment, domain);
+
+    let displayHtml = escapeHtml(query);
+    let apiContent = query;
+
+    apiContent = `${nlpContext}\n\n${followUpSuggestion}\n\nUser request:\n${apiContent}`;
+
+    if (domain === "health") {
+        apiContent = `Health consult mode: provide general information only, encourage professional medical advice when appropriate. ${apiContent}`;
+    } else if (domain === "legal") {
+        apiContent = `Legal info mode: provide general information only, avoid giving legal advice, and suggest consulting a qualified attorney when appropriate. ${apiContent}`;
+    } else if (domain === "finance") {
+        apiContent = `Finance mode: give general educational guidance, avoid personalized financial advice, and encourage checking official sources or a licensed professional. ${apiContent}`;
+    }
+
 
             if (attachedFiles.length > 0) {
                 let attSummary = "\n\n[Attachments:\n";

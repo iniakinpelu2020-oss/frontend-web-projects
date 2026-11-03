@@ -219,7 +219,10 @@ const handler = {
 
     const asked = Number(payload.max_tokens);
     const max_tokens = asked > 0 ? Math.min(asked, MAX_TOKENS_CAP) : DEFAULT_MAX_TOKENS;
-
+    const prepared = prepareMessages(payload.messages);
+    let messages = prepared.messages;
+    messages = addSystemNote(messages, DIRECT_NOTE);
+    if (prepared.wantsPidgin) messages = addSystemNote(messages, PIDGIN_NOTE);
     // Live web search: when the page asks for it OR the message looks like it needs current info.
     const lastText = [...messages].reverse().find((m) => m.role === "user")?.content || "";
     // Smart search: only when the message looks like it needs facts. Saves your free Tavily credits.

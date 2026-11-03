@@ -133,7 +133,10 @@ const DIRECT_NOTE =
   "and do not comment on their mood or feelings unless they bring it up. " +
   "You cannot browse the internet yourself: never say you are checking the internet or going to check. " +
   "Only treat web results as real if they appear in this conversation. " +
-  "If you are not sure about a recent fact, say you are not sure instead of guessing.";
+  "If you are not sure about a recent fact, say you are not sure instead of guessing. " +
+  "Be friendly, warm and conversational, like a smart friend. When someone greets you or chats casually, reply naturally and briefly " +
+  "(for example: 'Hey! How far? What are we doing today?'). Do not say you are a machine or that you have no emotions or personal interactions " +
+  "unless the user asks, and do not explain or analyse the user's greeting.";
 
 const PIDGIN_NOTE =
   "Reply in Nigerian Pidgin English as spoken in Nigeria and West Africa. Do NOT use Jamaican, Hawaiian or Caribbean spelling: " +
@@ -157,12 +160,14 @@ const NO_SEARCH_NOTE =
   "Live web search is NOT available for this message. Do not claim to have checked the internet. " +
   "If the question is about recent events or current office holders, say clearly that you could not check live information and may be out of date.";
 
+const FOLLOWUP_RE = /\b(it|that|this|them|those|these|he|she|him|her|they|more|again|internet|online)\b/i;
+
 async function liveSearch(env, messages) {
   if (!env.TAVILY_API_KEY) return { status: "no key set", note: "" };
   try {
     const users = messages.filter((m) => m.role === "user");
     let query = (users[users.length - 1]?.content || "").trim();
-    if (query.length < 50 && users.length > 1) {
+    if (users.length > 1 && (query.length < 20 || (query.length < 60 && FOLLOWUP_RE.test(query)))) {
       query = (users[users.length - 2].content.slice(0, 150) + " " + query).trim();
     }
     query = query.slice(0, 380);
@@ -180,15 +185,17 @@ async function liveSearch(env, messages) {
     if (!sr.ok) return { status: "error " + sr.status, note: "" };
     const sd = await sr.json();
     const found = (sd.results || [])
+      .filter((r) => typeof r.score !== "number" || r.score >= 0.3)
       .slice(0, 3)
       .map((r, i) => `[${i + 1}] ${r.title}\n${String(r.content || "").slice(0, 500)}\nSource: ${r.url}`)
       .join("\n\n");
-    if (!found) return { status: "no results", note: "" };
+    if (!found) return { status: "no relevant results", note: "" };
     return {
       status: "ok",
       note:
-        `Current web search results (today is ${new Date().toISOString().slice(0, 10)}). ` +
-        `These are up to date. If they conflict with what you remember, trust the results, and mention the source.\n\n${found}`,
+        `Web search results that the app fetched for the user's latest question (today is ${new Date().toISOString().slice(0, 10)}). ` +
+        `They are NOT from the user. Use them only if they help answer the question; if they look unrelated, ignore them and answer normally. ` +
+        `Never assume the user is asking about something they did not mention. For recent facts, trust them over your memory, and mention the source.\n\n${found}`,
     };
   } catch (e) {
     return { status: "failed", note: "" };

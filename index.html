@@ -1482,6 +1482,14 @@ if (attachedFiles.length > 0) {
             new MutationObserver(addButtons).observe(list, { childList: true });
             addButtons();
         })();
+                /* ===== Fix: keep the chat box when opening an old chat ===== */
+        (function () {
+            const form = document.getElementById('chatForm');
+            const msgs = document.getElementById('chatMessages');
+            if (!form || !msgs) return;
+            const box = form.closest('.absolute');
+            if (box && msgs.contains(box)) { msgs.parentElement.appendChild(box); }
+        })();
     </script>
 </body>
 </html>

@@ -79,7 +79,7 @@ function cleanUserText(raw) {
   for (const [key, note] of MODE_NOTES) if (t.includes(key)) mode = note + " ";
   t = t.replace(/^\s*\[Respond in [^\]]+\]\s*/i, "");
   const marker = "User request:\n";
-  const i = t.indexOf(marker);
+  const i = t.lastIndexOf(marker);
   if (i !== -1) t = t.slice(i + marker.length);
   return (mode + t).trim();
 }

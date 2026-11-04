@@ -723,11 +723,7 @@ const USER_IDENTITY_PROMPT = {
 };
         async function getActiveSystemPromptWithMemory() {
     return getActiveSystemPrompt();
-        }
-            const memory = await window.loadUserMemory();
-            if (!memory) return base;
-            return { role: 'system', content: base.content + "\n\nWhat you know about this user from past chats:\n" + memory };
-        }
+}
 
         function toggleWebSearch() {
             liveWebSearchEnabled = !liveWebSearchEnabled;

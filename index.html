@@ -698,10 +698,13 @@ function buildFollowUpPrompt(query, sentiment, domain) {
 
         const PROXY_URL = "https://apex-proxy.iniakinpelu2020.workers.dev"; 
         const ENSEMBLE_MODELS = [
-    '@cf/qwen/qwen3-30b-a3b-fp8',
-    '@cf/mistralai/mistral-small-3.1-24b-instruct',
-    '@cf/meta/llama-3.1-8b-instruct-fp8-fast',
-    '@cf/openai/gpt-oss-20b'
+<select id="modelSelect" class="model-select-dropdown">
+  <option value="@cf/nousresearch/hermes-2-pro-mistral-7b">Apex Hermes 2 Pro (Uncensored)</option>
+  <option value="@cf/deepseek-ai/deepseek-r1-distill-qwen-32b">Apex DeepSeek R1 (Reasoning)</option>
+  <option value="@cf/qwen/qwen2.5-coder-32b-instruct">Apex Qwen 2.5 Coder (Low-Refusal)</option>
+  <option value="@cf/mistralai/mistral-7b-instruct-v0.3">Apex Mistral 7B (Fast Compliance)</option>
+</select>
+
 ];
         /* ========================================================================
            SYSTEM PROMPT (With Auto-Translate & Memory Support)

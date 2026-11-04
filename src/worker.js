@@ -2,17 +2,18 @@ const PROJECT_ID = "apex-ai-1a873";
 const JWKS_URL =
   "https://www.googleapis.com/service_accounts/v1/jwk/securetoken@system.gserviceaccount.com";
 
-const AI_MODEL = "@cf/qwen/qwen3-30b-a3b-fp8";
+const AI_MODEL = "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b";
 const DEFAULT_MAX_TOKENS = 800;
 const MAX_TOKENS_CAP = 2048;
 
 // index.html still sends these names; they are only checked, then replaced by AI_MODEL.
 const CF_MODELS = [
-  "@cf/qwen/qwen3-30b-a3b-fp8",
-  "@cf/mistralai/mistral-small-3.1-24b-instruct",
-  "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
-  "@cf/openai/gpt-oss-20b",
+  "@cf/nousresearch/hermes-2-pro-mistral-7b",
+  "@cf/deepseek-ai/deepseek-r1-distill-qwen-32b",
+  "@cf/qwen/qwen2.5-coder-32b-instruct",
+  "@cf/mistralai/mistral-7b-instruct-v0.3"
 ];
+
 const ALLOWED_MODELS = [
   "google/gemma-4-31b-it:free",
   "openrouter/free",

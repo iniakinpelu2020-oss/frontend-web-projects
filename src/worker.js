@@ -13,6 +13,11 @@ const CF_MODELS = [
   "@cf/meta/llama-3.1-8b-instruct-fp8-fast",
   "@cf/openai/gpt-oss-20b",
 ];
+const ALLOWED_MODELS = [
+  "google/gemma-4-31b-it:free",
+  "openrouter/free",
+  ...CF_MODELS,
+];
 
 const CORS = {
   "Access-Control-Allow-Origin": "*",
@@ -260,12 +265,12 @@ const handler = {
       });
 
     try {
-      const result = await env.AI.run(AI_MODEL, {
+            const result = await env.AI.run(CF_MODELS.includes(payload.model) ? payload.model : AI_MODEL, {
         messages,
         max_tokens,
       });
-      const content =
-        result?.response ?? result?.choices?.[0]?.message?.content ?? "";
+            const raw = result?.response ?? result?.choices?.[0]?.message?.content ?? "";
+      const content = String(raw).replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
       // Same shape OpenRouter returned, so index.html needs no changes.
       const flag = wantsSearch && searchStatus !== "ok"
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`

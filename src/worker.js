@@ -271,7 +271,10 @@ const handler = {
         max_tokens,
       });
             const raw = result?.response ?? result?.choices?.[0]?.message?.content ?? "";
-      const content = String(raw).replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+      const content = String(raw)
+  .replace(/<think>[\s\S]*?<\/think>/gi, "")
+  .replace(/<think>[\s\S]*$/gi, "")
+  .trim();
       // Same shape OpenRouter returned, so index.html needs no changes.
       const flag = wantsSearch && searchStatus !== "ok"
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`

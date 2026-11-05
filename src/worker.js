@@ -408,11 +408,12 @@ const handler = {
       
       for (const m of CF_MODELS) {
         try {
-          const resText = await generateFull(env, m, messages, max_tokens);
-          if (resText && !resText.toLowerCase().includes("i'm sorry, but i can't help")) {
+                    const lower = resText.toLowerCase();
+          if (resText && !lower.includes("i'm sorry") && !lower.includes("i’m sorry") && !lower.includes("can't help") && !lower.includes("can’t help")) {
             content = resText;
             break;
           }
+
         } catch (err) {
           lastErr = err;
         }

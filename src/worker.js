@@ -427,7 +427,7 @@ const handler = {
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
         : "";
       return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
-    }
+      
     {
 
       const msg = String((e && e.message) || e);

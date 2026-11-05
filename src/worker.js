@@ -402,13 +402,32 @@ const handler = {
         headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store" },
       });
 
-    try {
-      const content = (await generateFull(env, payload.model, messages, max_tokens)).trim();
-      // Same shape OpenRouter returned, so index.html needs no changes.
+        try {
+      let content = "";
+      let lastErr = null;
+      
+      for (const m of CF_MODELS) {
+        try {
+          const resText = await generateFull(env, m, messages, max_tokens);
+          if (resText && !resText.toLowerCase().includes("i'm sorry, but i can't help")) {
+            content = resText;
+            break;
+          }
+        } catch (err) {
+          lastErr = err;
+        }
+      }
+
+      if (!content) {
+        throw lastErr || new Error("All models refused or failed.");
+      }
+
       const flag = wantsSearch && searchStatus !== "ok"
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
         : "";
       return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
+    } catch (e) {
+
     } catch (e) {
       const msg = String((e && e.message) || e);
       const limited = /neuron|allocation|quota|rate|limit|429/i.test(msg);

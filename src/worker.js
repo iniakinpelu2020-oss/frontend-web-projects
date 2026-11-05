@@ -396,26 +396,20 @@ const handler = {
       messages = addSystemNote(messages, found.note || NO_SEARCH_NOTE);
     }
 
-    const json = (obj, status = 200) =>
+        const json = (obj, status = 200) =>
       new Response(JSON.stringify(obj), {
         status,
         headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store" },
       });
 
-    export default {
-  async fetch(request, env, ctx) {
     try {
-      let payload = await request.json();
-      // ... (keep your existing payload, validation, and search logic here) ...
-
       let content = "";
       let lastErr = null;
-      
-      for (const m of CF_MODELS) {
+
+      for (const model of CF_MODELS) {
         try {
-          const resText = await generateFull(env, m, messages, max_tokens);
-          const lower = (resText || "").toLowerCase();
-          if (resText && !lower.includes("i'm sorry") && !lower.includes("i’m sorry") && !lower.includes("can't help") && !lower.includes("can’t help")) {
+          const resText = await generateFull(env, model, messages, max_tokens);
+          if (resText?.trim()) {
             content = resText;
             break;
           }
@@ -425,21 +419,24 @@ const handler = {
       }
 
       if (!content) {
-        throw lastErr || new Error("All models refused or failed.");
+        throw lastErr || new Error("All models failed to generate a reply.");
       }
 
-      const flag = wantsSearch && searchStatus !== "ok"
-        ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
-        : "";
-      return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
+      const flag =
+        wantsSearch && searchStatus !== "ok"
+          ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
+          : "";
+
+      return json({
+        choices: [{ message: { role: "assistant", content: content + flag } }],
+      });
     } catch (e) {
       const msg = String((e && e.message) || e);
       const limited = /neuron|allocation|quota|rate|limit|429/i.test(msg);
       return json({ error: { message: msg.slice(0, 200) } }, limited ? 429 : 502);
     }
-  }
+  },
 };
-
 // Safety net: if anything crashes, still answer with CORS headers so the page shows a real error
 // instead of "Request failed ()".
 export default {

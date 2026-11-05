@@ -1150,7 +1150,7 @@ if (attachedFiles.length > 0) {
                     throw new Error("Out of credits (402)" + (err.detail ? ": " + err.detail.slice(0, 150) : ""));
                 }
                 if (err.status === 429) throw new Error("Too many requests. Please wait a moment and try again.");
-                if (err.status >= 500) throw new Error(`Server error (${err.status}). Please try again shortly.`);
+                if (err.status >= 500) throw new Error(`Server error (${err.status})${err.detail ? ": " + err.detail.slice(0, 150) : ""}. Please try again shortly.`);
                 throw new Error(`Request failed (${err.status || ''})${err.detail ? ": " + err.detail.slice(0, 150) : ""}`);
             }
         }

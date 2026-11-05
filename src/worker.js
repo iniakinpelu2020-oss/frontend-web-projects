@@ -402,7 +402,12 @@ const handler = {
         headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store" },
       });
 
+    export default {
+  async fetch(request, env, ctx) {
     try {
+      let payload = await request.json();
+      // ... (keep your existing payload, validation, and search logic here) ...
+
       let content = "";
       let lastErr = null;
       
@@ -427,12 +432,13 @@ const handler = {
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
         : "";
       return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
-      
-
+    } catch (e) {
       const msg = String((e && e.message) || e);
       const limited = /neuron|allocation|quota|rate|limit|429/i.test(msg);
       return json({ error: { message: msg.slice(0, 200) } }, limited ? 429 : 502);
-    
+    }
+  }
+};
 
 // Safety net: if anything crashes, still answer with CORS headers so the page shows a real error
 // instead of "Request failed ()".

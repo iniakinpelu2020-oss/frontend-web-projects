@@ -238,7 +238,6 @@ async function searchFirecrawl(env, query) {
   return { items, status: items.length ? "ok" : "no results" };
 }
 
-// Tries Tavily first, then Exa, then Serper, then Firecrawl. Each one only runs if the one before it failed or is out of credits.
 async function liveSearch(env, messages) {
   const users = messages.filter((m) => m.role === "user");
   let query = (users[users.length - 1]?.content || "").trim();
@@ -272,14 +271,12 @@ async function liveSearch(env, messages) {
   return { status: tried.join("; "), note: "" };
 }
 
-// Backups, tried in order when Cloudflare fails or its daily Neurons are finished.
-// A backup whose key is not set is skipped.
 const BACKUPS = [
   { name: "Cerebras", url: "https://api.cerebras.ai/v1/chat/completions", key: "CEREBRAS_API_KEY", model: "gpt-oss-120b" },
-{ name: "Groq 120B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "openai/gpt-oss-120b" },
+  { name: "Groq 120B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "openai/gpt-oss-120b" },
   { name: "Mistral", url: "https://api.mistral.ai/v1/chat/completions", key: "MISTRAL_API_KEY", model: "mistral-small-latest" },
   { name: "NVIDIA", url: "https://integrate.api.nvidia.com/v1/chat/completions", key: "NVIDIA_API_KEY", model: "meta/llama-3.2-90b-vision-instruct" },
-{ name: "Groq 20B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "openai/gpt-oss-20b" },
+  { name: "Groq 20B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "openai/gpt-oss-20b" },
 ];
 
 async function backupChain(env, messages, max_tokens, cfErr) {
@@ -311,12 +308,10 @@ async function backupChain(env, messages, max_tokens, cfErr) {
 const stripThink = (t) =>
   String(t || "").replace(/<think>[\s\S]*?<\/think>/gi, "").replace(/<think>[\s\S]*$/i, "");
 
-// One model call. Cloudflare first, then the backups. Also reports if the reply was cut off by the token limit.
 async function generateOnce(env, model, messages, max_tokens) {
   const id = CF_MODELS.includes(model) ? model : AI_MODEL;
   let msgs = messages;
   if (id.includes("qwen3")) {
-    // Qwen3 can spend tokens on hidden thinking; this switch turns that off.
     const last = messages.length - 1;
     msgs = messages.map((m, i) => (i === last && m.role === "user" ? { ...m, content: m.content + " /no_think" } : m));
   }
@@ -332,7 +327,6 @@ async function generateOnce(env, model, messages, max_tokens) {
   }
 }
 
-// If a reply hits the limit, ask the model to carry on (up to 2 more times) and join the parts.
 async function generateFull(env, model, messages, max_tokens) {
   let { text, truncated } = await generateOnce(env, model, messages, max_tokens);
   let full = stripThink(text);
@@ -381,9 +375,8 @@ const handler = {
     let messages = prepared.messages;
     messages = addSystemNote(messages, DIRECT_NOTE);
     if (prepared.wantsPidgin) messages = addSystemNote(messages, PIDGIN_NOTE);
-    // Live web search: when the page asks for it OR the message looks like it needs current info.
+
     const lastText = [...messages].reverse().find((m) => m.role === "user")?.content || "";
-    // Smart search: only when the message looks like it needs facts. Saves your free Tavily credits.
     const t = lastText.trim();
     const wantsSearch =
       payload.web === true ||
@@ -396,7 +389,7 @@ const handler = {
       messages = addSystemNote(messages, found.note || NO_SEARCH_NOTE);
     }
 
-        const json = (obj, status = 200) =>
+    const json = (obj, status = 200) =>
       new Response(JSON.stringify(obj), {
         status,
         headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store" },
@@ -409,7 +402,14 @@ const handler = {
       for (const model of CF_MODELS) {
         try {
           const resText = await generateFull(env, model, messages, max_tokens);
-          if (resText?.trim()) {
+          const lower = (resText || "").toLowerCase();
+          if (
+            resText &&
+            !lower.includes("i'm sorry") &&
+            !lower.includes("i’m sorry") &&
+            !lower.includes("can't help") &&
+            !lower.includes("can’t help")
+          ) {
             content = resText;
             break;
           }
@@ -419,7 +419,7 @@ const handler = {
       }
 
       if (!content) {
-        throw lastErr || new Error("All models failed to generate a reply.");
+        throw lastErr || new Error("All models refused or failed.");
       }
 
       const flag =
@@ -437,8 +437,7 @@ const handler = {
     }
   },
 };
-// Safety net: if anything crashes, still answer with CORS headers so the page shows a real error
-// instead of "Request failed ()".
+
 export default {
   async fetch(request, env, ctx) {
     try {

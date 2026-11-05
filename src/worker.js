@@ -273,9 +273,9 @@ async function liveSearch(env, messages) {
 
 const BACKUPS = [
   { name: "Cerebras", url: "https://api.cerebras.ai/v1/chat/completions", key: "CEREBRAS_API_KEY", model: "llama3.1-70b" },
-  { name: "Groq", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "llama-3.3-70b-versatile" },
   { name: "Mistral", url: "https://api.mistral.ai/v1/chat/completions", key: "MISTRAL_API_KEY", model: "mistral-small-latest" },
   { name: "NVIDIA", url: "https://integrate.api.nvidia.com/v1/chat/completions", key: "NVIDIA_API_KEY", model: "meta/llama-3.1-70b-instruct" },
+  { name: "Groq", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "llama-3.3-70b-versatile" },
 ];
 
 async function backupChain(env, messages, max_tokens, cfErr) {

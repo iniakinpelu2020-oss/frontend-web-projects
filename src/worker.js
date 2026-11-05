@@ -428,12 +428,11 @@ const handler = {
         : "";
       return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
       
-    {
 
       const msg = String((e && e.message) || e);
       const limited = /neuron|allocation|quota|rate|limit|429/i.test(msg);
       return json({ error: { message: msg.slice(0, 200) } }, limited ? 429 : 502);
-    }
+    
 
 // Safety net: if anything crashes, still answer with CORS headers so the page shows a real error
 // instead of "Request failed ()".

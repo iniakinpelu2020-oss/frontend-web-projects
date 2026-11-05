@@ -427,13 +427,8 @@ const handler = {
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
         : "";
       return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
-    } catch (e) {
-
-      const flag = wantsSearch && searchStatus !== "ok"
-        ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
-        : "";
-      return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
-    } catch (e) {
+    }
+    {
 
       const msg = String((e && e.message) || e);
       const limited = /neuron|allocation|quota|rate|limit|429/i.test(msg);

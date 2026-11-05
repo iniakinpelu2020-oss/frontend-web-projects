@@ -276,14 +276,14 @@ async function liveSearch(env, messages) {
 // A backup whose key is not set is skipped.
 const BACKUPS = [
   { name: "Cerebras", url: "https://api.cerebras.ai/v1/chat/completions", key: "CEREBRAS_API_KEY", model: "gpt-oss-120b" },
-  { name: "Groq 70B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "llama-3.3-70b-versatile" },
+{ name: "Groq 120B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "openai/gpt-oss-120b" },
   { name: "Mistral", url: "https://api.mistral.ai/v1/chat/completions", key: "MISTRAL_API_KEY", model: "mistral-small-latest" },
   { name: "NVIDIA", url: "https://integrate.api.nvidia.com/v1/chat/completions", key: "NVIDIA_API_KEY", model: "meta/llama-3.2-90b-vision-instruct" },
-  { name: "Groq 8B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "llama-3.1-8b-instant" },
+{ name: "Groq 20B", url: "https://api.groq.com/openai/v1/chat/completions", key: "GROQ_API_KEY", model: "openai/gpt-oss-20b" },
 ];
 
 async function backupChain(env, messages, max_tokens, cfErr) {
-  let last = cfErr;
+  const errors = [`Cloudflare: ${(cfErr && cfErr.message) || cfErr}`];
   for (const b of BACKUPS) {
     if (!env[b.key]) continue;
     try {
@@ -302,10 +302,10 @@ async function backupChain(env, messages, max_tokens, cfErr) {
       if (!text) throw new Error(`${b.name}: empty reply`);
       return { text, truncated: j?.choices?.[0]?.finish_reason === "length" };
     } catch (e) {
-      last = e;
+      errors.push(String((e && e.message) || e));
     }
   }
-  throw last;
+  throw new Error(errors.join(" | "));
 }
 
 const stripThink = (t) =>

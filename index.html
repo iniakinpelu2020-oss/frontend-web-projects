@@ -699,12 +699,16 @@ function buildFollowUpPrompt(query, sentiment, domain) {
 }
 
         const PROXY_URL = "https://apex-proxy.iniakinpelu2020.workers.dev"; 
-        const ENSEMBLE_MODELS = [
-    '@cf/qwen/qwen3-30b-a3b-fp8',
-    '@cf/mistralai/mistral-small-3.1-24b-instruct',
-    '@cf/meta/llama-3.1-8b-instruct-fp8-fast',
-    '@cf/openai/gpt-oss-20b'
+        const models = [
+  "@cf/qwen/qwen3-30b-a3b-fp8",
+  "@cf/meta/llama-3.1-8b-instruct",
+  "@cf/meta/llama-3.1-70b-instruct",
+  "@cf/mistralai/mistral-large-24b",
+  "@cf/mistralai/mixtral-8x7b-instruct",
+  "@cf/qwen/qwen3-72b-instruct",
+  "@cf/unsloth/llama-3-8b-bnb-4bit"
 ];
+
         /* ========================================================================
            SYSTEM PROMPT (With Auto-Translate & Memory Support)
            ======================================================================== */

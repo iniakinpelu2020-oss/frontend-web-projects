@@ -402,18 +402,18 @@ const handler = {
         headers: { ...CORS, "Content-Type": "application/json", "Cache-Control": "no-store" },
       });
 
-        try {
+    try {
       let content = "";
       let lastErr = null;
       
       for (const m of CF_MODELS) {
         try {
-                    const lower = resText.toLowerCase();
+          const resText = await generateFull(env, m, messages, max_tokens);
+          const lower = (resText || "").toLowerCase();
           if (resText && !lower.includes("i'm sorry") && !lower.includes("i’m sorry") && !lower.includes("can't help") && !lower.includes("can’t help")) {
             content = resText;
             break;
           }
-
         } catch (err) {
           lastErr = err;
         }
@@ -422,6 +422,12 @@ const handler = {
       if (!content) {
         throw lastErr || new Error("All models refused or failed.");
       }
+
+      const flag = wantsSearch && searchStatus !== "ok"
+        ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`
+        : "";
+      return json({ choices: [{ message: { role: "assistant", content: content + flag } }] });
+    } catch (e) {
 
       const flag = wantsSearch && searchStatus !== "ok"
         ? `\n\n(Live web search unavailable: ${searchStatus}. This answer may be out of date.)`

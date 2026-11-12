@@ -342,6 +342,7 @@ export default function App() {
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sending, setSending] = useState(false)
   const toastTimer = useRef(null)
+  const [showIntro, setShowIntro] = useState(true)
 
   const filteredProjects = useMemo(() => activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter), [activeFilter])
 
@@ -438,7 +439,7 @@ export default function App() {
         </div>
       </div>
 
-      <EntryIntro />
+      {showIntro && <EntryIntro onComplete={() => setShowIntro(false)} />}
       <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-10 md:pb-14">
         <div className="absolute inset-0 bg-gradient-to-b from-[#1E0F15] to-[#160D11]" />
         <div className="relative mx-auto max-w-7xl px-4 md:px-8">

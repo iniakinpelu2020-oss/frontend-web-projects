@@ -28,6 +28,7 @@ export default function EntryIntro({ onComplete }) {
   const rafRef = useRef(null);
   const startRef = useRef(0);
   const completedRef = useRef(false);
+  const curtainStartedRef = useRef(false);
 
   const clearTimers = () => {
     timers.current.forEach(clearTimeout);
@@ -45,19 +46,18 @@ export default function EntryIntro({ onComplete }) {
   };
 
   const startCurtain = () => {
-    if (completedRef.current) return;
-    if (timers.current._curtainStarted) return;
-    timers.current._curtainStarted = true;
+    if (completedRef.current || curtainStartedRef.current) return;
+    curtainStartedRef.current = true;
     clearTimers();
     try {
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     } catch {}
     if (reducedMotion) {
       finish();
       return;
     }
     setPhase("curtain");
-    timers.current.push(setTimeout(finish, CURTAIN_MS));
+    timers.current.push(setTimeout(finish, CURTAIN_MS + 80));
   };
 
   useEffect(() => {
@@ -123,8 +123,11 @@ export default function EntryIntro({ onComplete }) {
     <div
       role="dialog"
       aria-label="Introduction"
-      className="fixed inset-0 z-[90] bg-[#160D11] text-white overflow-hidden"
+      className="fixed inset-0 z-[90] bg-[#160D11] text-white overflow-hidden will-change-transform"
       style={curtainStyle}
+      onTransitionEnd={(e) => {
+        if (e.target === e.currentTarget && phase === "curtain") finish();
+      }}
     >
       <div
         className={`absolute inset-0 transition-opacity duration-500 ${

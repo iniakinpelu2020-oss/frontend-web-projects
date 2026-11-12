@@ -45,7 +45,17 @@ export default function EntryIntro({ onComplete }) {
   };
 
   const startCurtain = () => {
+    if (completedRef.current) return;
+    if (timers.current._curtainStarted) return;
+    timers.current._curtainStarted = true;
     clearTimers();
+    try {
+      window.scrollTo(0, 0);
+    } catch {}
+    if (reducedMotion) {
+      finish();
+      return;
+    }
     setPhase("curtain");
     timers.current.push(setTimeout(finish, CURTAIN_MS));
   };
@@ -59,10 +69,22 @@ export default function EntryIntro({ onComplete }) {
   }, []);
 
   useEffect(() => {
+    if (phase === "done") return;
+    const prevOverflow = document.body.style.overflow;
+    const prevHtmlOverflow = document.documentElement.style.overflow;
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      document.documentElement.style.overflow = prevHtmlOverflow;
+    };
+  }, [phase]);
+
+  useEffect(() => {
     if (reducedMotion) {
       setSceneStage(2);
       setProgress(100);
-      timers.current.push(setTimeout(startCurtain, 1200));
+      timers.current.push(setTimeout(startCurtain, 0));
       return clearTimers;
     }
 
@@ -78,7 +100,7 @@ export default function EntryIntro({ onComplete }) {
       const lockupElapsed = Math.max(0, elapsed - SCENE_TWO_END);
       const span = LOCKUP_END - SCENE_TWO_END;
       setProgress(Math.min(100, Math.round((lockupElapsed / span) * 100)));
-      if (elapsed < LOCKUP_END) rafRef.current = requestAnimationFrame(tick);
+      if (elapsed < LOCKUP_END && !completedRef.current) rafRef.current = requestAnimationFrame(tick);
     };
     rafRef.current = requestAnimationFrame(tick);
 
@@ -90,7 +112,7 @@ export default function EntryIntro({ onComplete }) {
   if (phase === "done") return null;
 
   const curtainStyle =
-    phase === "curtain" && !reducedMotion
+    phase === "curtain"
       ? {
           transform: "translateY(100%)",
           transition: `transform ${CURTAIN_MS}ms ${CURTAIN_EASE}`,

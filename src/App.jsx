@@ -5,6 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink, BarChart3, Code, Zap, Shield } from 'lucide-react'
 import HangingBadge from './components/HangingBadge'
+import StickySceneIntro from './components/StickySceneIntro'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -340,18 +341,9 @@ export default function App() {
   const [toast, setToast] = useState(null)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sending, setSending] = useState(false)
-  const [spot, setSpot] = useState({ x: 0, y: 0 })
   const toastTimer = useRef(null)
 
   const filteredProjects = useMemo(() => activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter), [activeFilter])
-
-  const onHeroMove = (e) => {
-    const rect = e.currentTarget.getBoundingClientRect()
-    const touch = e.touches?.[0]
-    const clientX = touch ? touch.clientX : e.clientX
-    const clientY = touch ? touch.clientY : e.clientY
-    setSpot({ x: clientX - rect.left, y: clientY - rect.top })
-  }
 
   const navigate = (id) => {
     setRoute(id)
@@ -446,14 +438,10 @@ export default function App() {
         </div>
       </div>
 
+      <StickySceneIntro />
       <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-10 md:pb-14">
-        <div className="absolute inset-0 bg-[#160D11]" />
-        <div className="hero-grid absolute inset-0 opacity-25 pointer-events-none" />
-        <div
-          className="absolute inset-0 pointer-events-none transition-opacity duration-300"
-          style={{ background: `radial-gradient(420px circle at ${spot.x}px ${spot.y}px, rgba(225,29,72,0.28), transparent 45%), radial-gradient(600px 300px at 20% 20%, rgba(225,29,72,0.14), transparent 60%), radial-gradient(500px 300px at 80% 30%, rgba(225,29,72,0.10), transparent 60%)` }}
-        />
-        <div className="relative mx-auto max-w-7xl px-4 md:px-8" onMouseMove={onHeroMove} onTouchMove={onHeroMove}>
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1E0F15] to-[#160D11]" />
+        <div className="relative mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-6 min-h-[70vh]">
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} className="order-2 lg:order-1 text-center lg:text-left">
               <div className="font-display font-bold leading-[0.9] tracking-tight text-[2.6rem] sm:text-[3.8rem] md:text-[4.6rem] lg:text-[5.2rem]">

@@ -412,24 +412,26 @@ export default function App() {
   return (
     <div ref={appRef} className="min-h-screen bg-light text-ink">
       <Toast toast={toast} onClose={() => setToast(null)} />
-      <div className="fixed top-4 left-0 right-0 z-50 px-4">
-        <div className="mx-auto max-w-6xl rounded-full border border-white/10 bg-dark/70 backdrop-blur-md text-white shadow-lg">
-          <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
-            <button onClick={() => navigate('home')} className="font-display font-bold tracking-tight text-lg">Drippy Dee</button>
-            <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
-              {navLinks.map(link => (
-                <button key={link.id} onClick={() => navigate(link.id)} className={`hover:text-white transition ${route === link.id ? 'text-white' : ''}`}>{link.label}</button>
-              ))}
-            </nav>
-            <div className="hidden md:block">
-              <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={openWhatsApp} className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accentHover px-4 py-2 text-sm font-semibold transition">Work with me <ArrowRight size={16} /></motion.button>
+      <div className="fixed top-4 left-0 right-0 z-[60] px-4">
+        <div className="mx-auto max-w-6xl">
+          <div className="rounded-full border border-white/10 bg-dark/70 backdrop-blur-md text-white shadow-lg overflow-hidden">
+            <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
+              <button onClick={() => navigate('home')} className="font-display font-bold tracking-tight text-lg">Drippy Dee</button>
+              <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
+                {navLinks.map(link => (
+                  <button key={link.id} onClick={() => navigate(link.id)} className={`hover:text-white transition ${route === link.id ? 'text-white' : ''}`}>{link.label}</button>
+                ))}
+              </nav>
+              <div className="hidden md:block">
+                <motion.button whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }} onClick={openWhatsApp} className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accentHover px-4 py-2 text-sm font-semibold transition">Work with me <ArrowRight size={16} /></motion.button>
+              </div>
+              <button className="md:hidden p-2" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
+                {menuOpen ? <X /> : <Menu />}
+              </button>
             </div>
-            <button className="md:hidden p-2" onClick={() => setMenuOpen(v => !v)} aria-label="Toggle menu">
-              {menuOpen ? <X /> : <Menu />}
-            </button>
           </div>
           {menuOpen && (
-            <div className="md:hidden border-t border-white/10 px-4 py-3 flex flex-col gap-2 text-sm">
+            <div className="md:hidden mt-2 rounded-2xl border border-white/10 bg-[#160D11] px-4 py-3 flex flex-col gap-2 text-sm shadow-xl">
               {navLinks.map(link => (
                 <button key={link.id} onClick={() => navigate(link.id)} className="text-left py-2 text-white/90">{link.label}</button>
               ))}
@@ -572,7 +574,7 @@ export default function App() {
         </div>
       </Section>
 
-      <Section id="reviews" className="bg-light py-16 md:py-24">
+      <Section id="reviews" className="bg-light py-16 md:py-24 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <div className="text-center mb-10">
             <p className="text-accent font-semibold mb-2">Reviews</p>
@@ -611,7 +613,7 @@ export default function App() {
 
       {route === 'creator' && (
         <Section id="creator" className="bg-light">
-          <div className="bg-dark text-white glow">
+          <div className="bg-dark text-white overflow-hidden">
             <div className="mx-auto max-w-7xl px-4 md:px-8 py-16 md:py-24">
               <p className="text-accent font-semibold mb-3">Creator & Media</p>
               <h1 className="font-display text-5xl md:text-7xl font-bold leading-[0.95] mb-4">CONTENT CREATOR</h1>

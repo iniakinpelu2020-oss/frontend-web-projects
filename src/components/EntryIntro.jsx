@@ -101,7 +101,7 @@ export default function EntryIntro({ onComplete }) {
     <div
       role="dialog"
       aria-label="Introduction"
-      className="fixed inset-0 z-50 bg-[#160D11] text-white overflow-hidden"
+      className="fixed inset-0 z-[90] bg-[#160D11] text-white overflow-hidden"
       style={curtainStyle}
     >
       <div

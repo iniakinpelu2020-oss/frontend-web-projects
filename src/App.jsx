@@ -65,9 +65,39 @@ const blogPosts = [
 ]
 
 const packages = [
-  { name: 'Starter', price: '₦', perks: ['1 short-form video/edit', 'Basic script & captions', '1 revision', 'Delivery in 3-5 days'], featured: false },
-  { name: 'Pro', price: '₦₦', perks: ['3 content pieces', 'Strategy & hooks', 'Branded visuals', '2 revisions', 'Delivery in 5-7 days'], featured: true },
-  { name: 'Custom', price: 'Let’s talk', perks: ['Campaign/content system', 'Tech + creator blend', 'Multi-platform assets', 'Flexible scope & timeline'], featured: false },
+  {
+    name: 'Starter',
+    price: '₦75,000 / $50',
+    perks: [
+      '1 short-form video (Reels / TikTok / Shorts)',
+      'Scriptwriting, pacing & captions',
+      '1 revision round',
+      'Delivery in 3–5 days',
+    ],
+    featured: false,
+  },
+  {
+    name: 'Pro',
+    price: '₦180,000 / $120',
+    perks: [
+      '3 high-retention videos (Tech, AI, or Finance breakdown)',
+      'Full hook strategy, scripting & motion graphics',
+      'Cross-platform posting (@InsightDeskHQ & Drippy Dee)',
+      '2 revision rounds',
+      'Delivery in 5–7 days',
+    ],
+    featured: true,
+  },
+  {
+    name: 'Custom',
+    price: 'From ₦350,000 / $250+',
+    perks: [
+      'Dedicated brand campaign or custom web + AI build',
+      'Multi-platform content rollout & product demo',
+      'Priority turnaround & flexible scope',
+    ],
+    featured: false,
+  },
 ]
 
 function Section({ id, className = '', children }) {
@@ -174,6 +204,7 @@ export default function App() {
 
   const submitContact = async (e) => {
     e.preventDefault()
+    if (sending) return
     setSending(true)
     try {
       const res = await fetch('/api/contact', {
@@ -181,10 +212,11 @@ export default function App() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      const data = await res.json()
-      if (!res.ok || !data.ok) throw new Error(data.error || 'Failed to send message')
+      let data = {}
+      try { data = await res.json() } catch { data = {} }
+      if (!res.ok || data.ok === false) throw new Error(data.error || 'Failed to send message')
       setForm({ name: '', email: '', message: '' })
-      showToast('success', data.message || 'Message sent successfully!')
+      showToast('success', data.message || 'Message received!')
     } catch (err) {
       showToast('error', err.message || 'Something went wrong. Please try again.')
     } finally {
@@ -224,8 +256,10 @@ export default function App() {
         </div>
       </div>
 
-      <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-16 md:pb-24 glow">
+      <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-16 md:pb-24">
+        <div className="absolute inset-0 bg-[#160D11]" />
         <div className="absolute inset-0 opacity-30" style={{backgroundImage:'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.12) 1px, transparent 0)', backgroundSize:'28px 28px'}} />
+        <div className="absolute inset-0 pointer-events-none" style={{background:'radial-gradient(600px 300px at 20% 20%, rgba(225,29,72,0.18), transparent 60%), radial-gradient(500px 300px at 80% 30%, rgba(225,29,72,0.12), transparent 60%)'}} />
         <div className="relative mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-6 min-h-[70vh]">
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} className="order-2 lg:order-1 text-center lg:text-left">
@@ -476,9 +510,14 @@ export default function App() {
                   <label className="block text-sm mb-1.5 text-white/80">Tell me about your project</label>
                   <textarea required rows={5} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent resize-y" placeholder="What are you building? Goals, timeline, scope..." />
                 </div>
-                <button disabled={sending} className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent hover:bg-accentHover disabled:opacity-60 px-5 py-3 font-semibold transition">
-                  {sending ? 'Sending...' : 'Send Message'} <Send size={16} />
-                </button>
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <button type="submit" disabled={sending} className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent hover:bg-accentHover disabled:opacity-60 px-5 py-3 font-semibold transition">
+                    {sending ? 'Sending...' : 'Send Message'} <Send size={16} />
+                  </button>
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 hover:border-accent/60 hover:bg-white/5 px-5 py-3 font-semibold transition text-white">
+                    Or message directly on WhatsApp <ExternalLink size={16} />
+                  </a>
+                </div>
               </div>
             </form>
           </div>

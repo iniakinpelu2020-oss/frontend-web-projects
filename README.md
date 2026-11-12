@@ -1,13 +1,24 @@
-# frontend-web-projects
-Clean, responsive HTML5 and CSS3 web layouts and components.
-# Front-End Web Projects
+# Drippy Dee Portfolio
 
-A collection of clean, responsive web layouts and UI components built using semantic HTML5 and CSS3.
+Personal portfolio for **Drippy Dee (Adebisi Daniel Akinpelu)** built with React, Vite, Tailwind CSS, Framer Motion, and Lucide Icons. Includes an Express contact API at `/api/contact`.
 
-## Featured Projects
-- **Landing Page:** Responsive landing page build using CSS Flexbox and Grid.
-- **Form Layout:** Clean, structured HTML form with modern CSS styling.
+## Run locally
 
-## Technologies Used
-- HTML5
-- CSS3
+```bash
+npm install
+npm run dev
+```
+
+- Vite frontend: http://localhost:5173
+- Contact API: http://localhost:3001 (proxied via `/api` in dev)
+
+## Build
+
+```bash
+npm run build
+npm run preview
+```
+
+## Contact API
+
+`POST /api/contact` with JSON `{ "name", "email", "message" }` validates input, logs/stores submissions in memory, and returns toast-friendly JSON.

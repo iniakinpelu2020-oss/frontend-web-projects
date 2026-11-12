@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply font-body bg-light text-ink antialiased;
+}
+
+.glow {
+  background: radial-gradient(600px 300px at 20% 20%, rgba(225, 29, 72, 0.18), transparent 60%),
+              radial-gradient(500px 300px at 80% 30%, rgba(225, 29, 72, 0.12), transparent 60%),
+              radial-gradient(400px 300px at 50% 80%, rgba(255, 255, 255, 0.04), transparent 60%);
+}
+
+.perspective-1000 { perspective: 1200px; }
+.preserve-3d { transform-style: preserve-3d; }
+.backface-hidden { backface-visibility: hidden; }
+.rotate-y-180 { transform: rotateY(180deg); }

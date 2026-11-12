@@ -224,7 +224,7 @@ export default function App() {
         </div>
       </div>
 
-      <Section id="home" className="relative overflow-hidden bg-dark text-white pt-28 md:pt-32 pb-16 md:pb-24 glow">
+      <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-16 md:pb-24 glow">
         <div className="absolute inset-0 opacity-30" style={{backgroundImage:'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.12) 1px, transparent 0)', backgroundSize:'28px 28px'}} />
         <div className="relative mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-6 min-h-[70vh]">

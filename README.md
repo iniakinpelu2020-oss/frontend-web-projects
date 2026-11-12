@@ -1,6 +1,6 @@
 # Drippy Dee Portfolio
 
-Personal portfolio for **Drippy Dee (Adebisi Daniel Akinpelu)** built with React, Vite, Tailwind CSS, Framer Motion, and Lucide Icons. Includes an Express contact API at `/api/contact`.
+Personal portfolio for **Drippy Dee (Daniel Adegoke Akinpelu)** built with React, Vite, Tailwind CSS, Framer Motion, and Lucide Icons. Includes an Express contact API at `/api/contact`.
 
 ## Run locally
 

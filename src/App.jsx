@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink } from 'lucide-react'
 import HangingBadge from './components/HangingBadge'
+import ScrollytellingIntro from './components/ScrollytellingIntro'
 
 const WHATSAPP_URL = 'https://wa.me/2347038273216?text=Hey%20Drippy%20Dee%2C%20I%20want%20to%20work%20with%20you%20on%20a%20project'
 const PROFILE_PHOTO = '[PASTE_YOUR_DIRECT_IMAGE_URL_HERE]'
@@ -148,6 +149,7 @@ export default function App() {
   const [toast, setToast] = useState(null)
   const [form, setForm] = useState({ name: '', email: '', message: '' })
   const [sending, setSending] = useState(false)
+  const [introComplete, setIntroComplete] = useState(false)
   const toastTimer = useRef(null)
 
   const filteredProjects = useMemo(() => activeFilter === 'All' ? projects : projects.filter(p => p.category === activeFilter), [activeFilter])
@@ -193,8 +195,9 @@ export default function App() {
   return (
     <div className="min-h-screen bg-light text-ink">
       <Toast toast={toast} onClose={() => setToast(null)} />
+      <ScrollytellingIntro onComplete={setIntroComplete} />
 
-      <div className="fixed top-4 left-0 right-0 z-50 px-4">
+      <div className={`fixed top-4 left-0 right-0 z-50 px-4 transition-all duration-700 ${introComplete ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4 pointer-events-none'}`}>
         <div className="mx-auto max-w-6xl rounded-full border border-white/10 bg-dark/70 backdrop-blur-md text-white shadow-lg">
           <div className="flex items-center justify-between px-4 md:px-6 h-14 md:h-16">
             <button onClick={() => navigate('home')} className="font-display font-bold tracking-tight text-lg">Drippy Dee</button>
@@ -265,7 +268,7 @@ export default function App() {
                 )}
                 <div className="absolute inset-0 bg-gradient-to-t from-dark/60 via-transparent to-transparent" />
                 <div className="absolute bottom-5 left-5 right-5 rounded-2xl bg-white/90 backdrop-blur px-4 py-3 border border-black/5">
-                  <p className="font-display text-lg font-semibold">Adebisi Daniel Akinpelu</p>
+                  <p className="font-display text-lg font-semibold">Daniel Adegoke Akinpelu</p>
                   <p className="text-sm text-gray-600">Drippy Dee</p>
                 </div>
               </div>
@@ -278,7 +281,7 @@ export default function App() {
               <p className="text-accent font-semibold mb-3">About</p>
               <h2 className="font-display text-4xl md:text-5xl font-bold leading-tight mb-5">Building sharp digital experiences with code, AI, and creativity.</h2>
               <p className="text-gray-700 text-lg leading-relaxed">
-                I’m <span className="font-semibold text-ink">Adebisi Daniel Akinpelu</span> (aka <span className="font-semibold text-ink">Drippy Dee</span>) — a Web Developer, AI & Automation Builder, and Digital Content Creator based in Ibadan / Ile-Ife, NG. I craft modern web products, automate workflows with intelligent systems, and create engaging content that breaks down tech, finance, and digital culture.
+                I’m <span className="font-semibold text-ink">Daniel Adegoke Akinpelu</span> (aka <span className="font-semibold text-ink">Drippy Dee</span>) — a Web Developer, AI & Automation Builder, and Digital Content Creator based in Ibadan / Ile-Ife, NG. I craft modern web products, automate workflows with intelligent systems, and create engaging content that breaks down tech, finance, and digital culture.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 text-sm">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white border border-black/10 px-3 py-1.5"><MapPin size={14} className="text-accent"/> Ibadan / Ile-Ife, NG</span>
@@ -480,7 +483,7 @@ export default function App() {
             </form>
           </div>
           <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
-            <p>© 2026 Drippy Dee (Adebisi Daniel Akinpelu). All rights reserved.</p>
+            <p>© 2026 Drippy Dee (Daniel Adegoke Akinpelu). All rights reserved.</p>
             <div className="flex items-center gap-4">
               <a href="#" className="hover:text-white inline-flex items-center gap-1"><Github size={15}/> GitHub</a>
               <a href="#" className="hover:text-white inline-flex items-center gap-1"><Linkedin size={15}/> LinkedIn</a>

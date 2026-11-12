@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
 import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink, BarChart3, Code, Zap, Shield } from 'lucide-react'
 import HangingBadge from './components/HangingBadge'
-import StickySceneIntro from './components/StickySceneIntro'
+import EntryIntro from './components/EntryIntro'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -438,7 +438,7 @@ export default function App() {
         </div>
       </div>
 
-      <StickySceneIntro />
+      <EntryIntro />
       <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-10 md:pb-14">
         <div className="absolute inset-0 bg-gradient-to-b from-[#1E0F15] to-[#160D11]" />
         <div className="relative mx-auto max-w-7xl px-4 md:px-8">

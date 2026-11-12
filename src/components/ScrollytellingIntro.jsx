@@ -1,12 +1,32 @@
 import { useRef } from 'react'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin'
 import { useGSAP } from '@gsap/react'
 
-gsap.registerPlugin(ScrollTrigger, useGSAP)
+gsap.registerPlugin(useGSAP, ScrollTrigger, ScrollToPlugin)
 
 export default function ScrollytellingIntro({ onComplete }) {
   const container = useRef(null)
+  const stRef = useRef(null)
+
+  const getIntroEnd = () => {
+    const st = stRef.current
+    if (st) return st.end
+    const el = container.current
+    if (!el) return window.innerHeight * 4
+    return el.offsetTop + window.innerHeight * 3
+  }
+
+  const playIntro = () => {
+    const end = getIntroEnd()
+    gsap.to(window, {
+      duration: 8,
+      ease: 'power1.inOut',
+      scrollTo: { y: end, autoKill: true },
+      overwrite: 'auto',
+    })
+  }
 
   useGSAP(() => {
     const tl = gsap.timeline({
@@ -20,9 +40,13 @@ export default function ScrollytellingIntro({ onComplete }) {
         invalidateOnRefresh: true,
         onUpdate: (self) => {
           if (onComplete) onComplete(self.progress >= 0.995)
+          const bar = container.current?.querySelector('.progress-fill')
+          if (bar) bar.style.width = `${self.progress * 100}%`
         },
       },
     })
+
+    stRef.current = tl.scrollTrigger
 
     tl.set('.intro-nav-fade', { autoAlpha: 0 })
       .set('.stage2, .stage3', { autoAlpha: 0 })
@@ -63,28 +87,21 @@ export default function ScrollytellingIntro({ onComplete }) {
       .to('.intro-overlay', { autoAlpha: 0, duration: 0.08 }, 0.92)
       .to('.intro-nav-fade', { autoAlpha: 1, duration: 0.06 }, 0.94)
 
-    const progress = { value: 0 }
-    gsap.to(progress, {
-      value: 100,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: container.current,
-        start: 'top top',
-        end: '+=300%',
-        scrub: 1,
-        onUpdate: (self) => {
-          const bar = container.current?.querySelector('.progress-fill')
-          if (bar) bar.style.width = `${self.progress * 100}%`
-        },
-      },
-    })
+    if (window.scrollY < 50) {
+      const auto = gsap.delayedCall(0.15, playIntro)
+      return () => auto.kill()
+    }
   }, { scope: container })
 
   const skipIntro = () => {
-    const el = container.current
-    if (!el) return
-    const end = el.offsetTop + el.offsetHeight
+    const end = getIntroEnd()
     window.scrollTo({ top: end, behavior: 'smooth' })
+  }
+
+  const replayIntro = () => {
+    gsap.killTweensOf(window)
+    window.scrollTo({ top: 0, behavior: 'auto' })
+    gsap.delayedCall(0.05, playIntro)
   }
 
   return (
@@ -198,6 +215,9 @@ export default function ScrollytellingIntro({ onComplete }) {
 
         <button onClick={skipIntro} className="absolute top-6 right-6 z-20 rounded-full border border-white/20 bg-black/30 backdrop-blur px-4 py-2 text-sm text-white/90 hover:text-white hover:border-[#E11D48] transition">
           Skip Intro →
+        </button>
+        <button onClick={replayIntro} className="absolute top-6 left-6 z-20 rounded-full border border-white/20 bg-black/30 backdrop-blur px-4 py-2 text-sm text-white/90 hover:text-white hover:border-[#E11D48] transition">
+          ↺ Replay Intro
         </button>
       </div>
     </section>

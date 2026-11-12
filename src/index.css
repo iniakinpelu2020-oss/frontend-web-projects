@@ -20,6 +20,30 @@ body {
               radial-gradient(400px 300px at 50% 80%, rgba(255, 255, 255, 0.04), transparent 60%);
 }
 
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(225, 29, 72, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(225, 29, 72, 0.12) 1px, transparent 1px);
+  background-size: 48px 48px;
+  transform: perspective(800px) rotateX(55deg) scale(1.2);
+  transform-origin: top;
+  animation: gridDrift 18s linear infinite;
+}
+
+@keyframes gridDrift {
+  0% { background-position: 0 0, 0 0; }
+  100% { background-position: 0 96px, 96px 0; }
+}
+
+.marquee-track {
+  animation: marquee 22s linear infinite;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
 .perspective-1000 { perspective: 1200px; }
 .preserve-3d { transform-style: preserve-3d; }
 .backface-hidden { backface-visibility: hidden; }

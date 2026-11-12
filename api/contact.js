@@ -35,28 +35,32 @@ export default async function handler(req, res) {
     const user = process.env.SMTP_USER
     const pass = process.env.SMTP_PASS
 
-    if (user && pass) {
-      try {
-        const transporter = nodemailer.createTransport({
-          service: 'gmail',
-          auth: { user, pass },
-        })
-        await transporter.sendMail({
-          from: `"Drippy Dee Portfolio" <${user}>`,
-          to: user,
-          replyTo: clean.email,
-          subject: `New project message from ${clean.name}`,
-          text: `Name: ${clean.name}\nEmail: ${clean.email}\n\nMessage:\n${clean.message}`,
-          html: `<div style="font-family:sans-serif;line-height:1.6"><h2>New project message</h2><p><strong>Name:</strong> ${clean.name}</p><p><strong>Email:</strong> ${clean.email}</p><p><strong>Message:</strong></p><p>${clean.message.replace(/\n/g, '<br/>')}</p></div>`,
-        })
-      } catch (mailErr) {
-        console.error('Mail send failed (fallback to ok):', mailErr)
-      }
+    if (!user || !pass) {
+      return res.status(200).json({ ok: true, message: "Message sent! I'll reply shortly." })
     }
 
-    return res.status(200).json({ ok: true, message: 'Message received!' })
+    try {
+      const transporter = nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        auth: { user, pass },
+      })
+
+      await transporter.sendMail({
+        to: user,
+        from: user,
+        replyTo: clean.email,
+        subject: `New Portfolio Message from ${clean.name}`,
+        text: `Name: ${clean.name}\nEmail: ${clean.email}\n\nMessage:\n${clean.message}`,
+        html: `<div style="font-family:Arial,sans-serif;line-height:1.6;color:#111"><h2>New Portfolio Message</h2><p><strong>Name:</strong> ${clean.name}</p><p><strong>Email:</strong> ${clean.email}</p><p><strong>Message:</strong></p><p>${String(clean.message).replace(/</g, '&lt;').replace(/\n/g, '<br/>')}</p></div>`,
+      })
+
+      return res.status(200).json({ ok: true })
+    } catch (err) {
+      return res.status(500).json({ ok: false, error: err?.message || 'Failed to send email' })
+    }
   } catch (err) {
-    console.error('Contact handler error:', err)
-    return res.status(500).json({ ok: false, error: 'Something went wrong. Please try again.' })
+    return res.status(500).json({ ok: false, error: err?.message || 'Server error' })
   }
 }

@@ -64,7 +64,7 @@ export default function HangingBadge() {
                 </div>
                 <div className="text-center">
                   <h3 className="font-display text-2xl font-bold tracking-tight">DRIPPY DEE</h3>
-                  <p className="text-xs tracking-wider text-white/70 mt-1">WEB DEVELOPER & CREATOR</p>
+                  <p className="text-xs tracking-wider text-white/70 mt-1">DEVELOPER • ETHICAL HACKER • CREATOR</p>
                 </div>
                 <div className="mt-5 rounded-xl bg-white/5 border border-white/10 p-3">
                   <div className="h-10 w-full rounded bg-[repeating-linear-gradient(90deg,#fff_0,#fff_2px,transparent_2px,transparent_5px)] opacity-80" />
@@ -87,7 +87,7 @@ export default function HangingBadge() {
                   <span className="h-2 w-2 rounded-full bg-accent animate-pulse" />
                 </div>
                 <div className="space-y-3 mt-2">
-                  {['Full-Stack Web Dev', 'AI & Automation', 'Content Creator', 'Ibadan / Ile-Ife, NG'].map((item) => (
+                  {['Full-Stack Web Dev', 'Ethical Hacker & Cybersecurity', 'AI & Automation', 'Content Creator', 'Ibadan / Ile-Ife, NG'].map((item) => (
                     <div key={item} className="rounded-xl border border-white/10 bg-white/5 px-4 py-3">
                       <p className="text-sm font-medium text-white">{item}</p>
                     </div>
@@ -101,7 +101,6 @@ export default function HangingBadge() {
             </div>
           </motion.div>
         </motion.div>
-        <p className="absolute bottom-0 text-xs text-white/50">Click badge to flip</p>
       </motion.div>
     </div>
   )

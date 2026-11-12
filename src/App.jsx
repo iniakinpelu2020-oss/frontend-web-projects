@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import gsap from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useGSAP } from '@gsap/react'
-import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink, BarChart3, Code, Zap } from 'lucide-react'
+import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink, BarChart3, Code, Zap, Shield } from 'lucide-react'
 import HangingBadge from './components/HangingBadge'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
@@ -20,7 +20,7 @@ const navLinks = [
   { id: 'blog', label: 'Blog' },
 ]
 
-const roles = ['Web Developer', 'AI & Automation Builder', 'Content Creator']
+const roles = ['Web Developer', 'Ethical Hacker & Cybersecurity Expert', 'AI & Automation Builder', 'Content Creator']
 
 const projects = [
   {
@@ -57,9 +57,17 @@ const projects = [
     tags: ['SVG', 'Scroll Animations', 'Performance'],
     caseStudy: 'A performance-minded showcase using scroll progress to orchestrate reveals and filters while maintaining smooth 60fps interactions.',
   },
+  {
+    title: 'SecAudit // Vulnerability & Pentest Suite',
+    category: 'AI & Security',
+    dark: true,
+    desc: 'Offensive security assessment toolkit for web apps: automated scans, vulnerability triage, and remediation guidance.',
+    tags: ['Ethical Hacking', 'AppSec', 'Penetration Testing', 'Security Audit'],
+    caseStudy: 'Conducted offensive security testing across web surfaces with responsible disclosure workflows. Findings were validated, prioritized by risk, and remediated with hardened configurations and secure coding fixes, resulting in a clean audit baseline: OWASP Top 10 coverage and 0 critical vulnerabilities.',
+  },
 ]
 
-const filters = ['All', 'Web Dev', 'AI & Bots', 'HTML/CSS/JS', 'UI/UX']
+const filters = ['All', 'Web Dev', 'AI & Bots', 'AI & Security', 'HTML/CSS/JS', 'UI/UX']
 
 const blogPosts = [
   { title: 'Building Apex AI: Lessons from a Custom Frontend', category: 'Tech Life', excerpt: 'What I learned designing a fast AI interface with vanilla web tech and serverless deployment.', body: 'From prompt UX to performance budgets, building Apex AI reinforced that clarity and speed matter as much as model quality. I focused on lean UI, resilient API handling, and iteration loops that made shipping improvements easy.' },
@@ -68,7 +76,7 @@ const blogPosts = [
   { title: 'From Ideas to Execution: My Creative Process', category: 'The Twist', excerpt: 'Turning scattered inspiration into finished web and content projects.', body: 'I capture ideas quickly, validate them with tiny prototypes, and only scale what proves useful. The twist is consistency: showing up, refining, and publishing.' },
 ]
 
-const techStack = ['React', 'Next.js', 'Node.js', 'Python', 'OpenAI / Gemini API', 'WhatsApp Cloud API', 'GSAP', 'Tailwind CSS']
+const techStack = ['React', 'Next.js', 'Node.js', 'Python', 'OpenAI / Gemini API', 'WhatsApp Cloud API', 'GSAP', 'Tailwind CSS', 'Ethical Hacking', 'Penetration Testing', 'Vulnerability Audits', 'AppSec']
 
 const packages = [
   {
@@ -275,10 +283,51 @@ function ScrollShowcasePreview() {
   )
 }
 
+function SecAuditPreview() {
+  const lines = [
+    { t: '[SCAN] Initializing SecAudit engine...', c: 'text-cyan-300' },
+    { t: '[OK] SSL/TLS Hardened', c: 'text-emerald-400' },
+    { t: '[OK] Secure headers & CSP validated', c: 'text-emerald-400' },
+    { t: '[WARN] IDOR / XSS Vector Patched', c: 'text-amber-300' },
+    { t: '[OK] Auth/session controls verified', c: 'text-emerald-400' },
+    { t: '[OK] OWASP Top 10 Audit Passed', c: 'text-emerald-400' },
+    { t: '[INFO] Remediation report generated', c: 'text-cyan-300' },
+  ]
+  const [count, setCount] = useState(0)
+  useEffect(() => {
+    setCount(0)
+    let i = 0
+    const id = setInterval(() => {
+      i += 1
+      setCount(i)
+      if (i >= lines.length) clearInterval(id)
+    }, 450)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <div className="rounded-xl border border-emerald-500/20 bg-[#050b0a] text-white p-3 h-full min-h-[220px] font-mono">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2 text-xs text-emerald-300"><Shield size={14} className="text-emerald-400" /> SecAudit Terminal</div>
+        <span className="text-[10px] px-2 py-1 rounded-full bg-emerald-500/15 text-emerald-300 border border-emerald-400/30">0 Critical Vulnerabilities</span>
+      </div>
+      <div className="rounded-lg bg-black/50 border border-white/10 p-3 text-[11px] leading-relaxed space-y-1.5 min-h-[150px]">
+        {lines.slice(0, count).map((l, i) => <div key={i} className={l.c}>{l.t}</div>)}
+        {count < lines.length && <div className="text-emerald-200/70 animate-pulse">▌ scanning...</div>}
+      </div>
+      <div className="mt-2 flex gap-2 text-[10px] text-white/60">
+        <span className="px-2 py-1 rounded bg-white/5 border border-white/10">Pentest</span>
+        <span className="px-2 py-1 rounded bg-white/5 border border-white/10">AppSec</span>
+        <span className="px-2 py-1 rounded bg-white/5 border border-white/10">OWASP Top 10</span>
+      </div>
+    </div>
+  )
+}
+
 function ProjectPreview({ title }) {
   if (title === 'Apex AI') return <ApexPreview />
   if (title === 'WhatsApp AI Auto-Reply Bot') return <WhatsAppPreview />
   if (title === 'The Insight Desk (@InsightDeskHQ)') return <InsightDeskPreview />
+  if (title === 'SecAudit // Vulnerability & Pentest Suite') return <SecAuditPreview />
   return <ScrollShowcasePreview />
 }
 
@@ -407,10 +456,10 @@ export default function App() {
         <div className="relative mx-auto max-w-7xl px-4 md:px-8" onMouseMove={onHeroMove} onTouchMove={onHeroMove}>
           <div className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-6 min-h-[70vh]">
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} className="order-2 lg:order-1 text-center lg:text-left">
-              <div className="font-display font-bold leading-[0.9] tracking-tight text-[3rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem]">
-                <div>WEB</div>
-                <div className="text-accent">AI &</div>
-                <div>CONTENT</div>
+              <div className="font-display font-bold leading-[0.9] tracking-tight text-[2.6rem] sm:text-[3.8rem] md:text-[4.6rem] lg:text-[5.2rem]">
+                <div>WEB &amp;</div>
+                <div className="text-accent">AI</div>
+                <div>SECURITY</div>
               </div>
             </motion.div>
 
@@ -419,9 +468,9 @@ export default function App() {
             </div>
 
             <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="order-3 text-center lg:text-right">
-              <div className="font-display font-bold leading-[0.9] tracking-tight text-[3rem] sm:text-[4.5rem] md:text-[5.5rem] lg:text-[6rem]">
-                <div>DEVELOPER</div>
-                <div className="text-accent">AUTOMATION</div>
+              <div className="font-display font-bold leading-[0.9] tracking-tight text-[2.6rem] sm:text-[3.8rem] md:text-[4.6rem] lg:text-[5.2rem]">
+                <div>DEV &amp; ETHICAL</div>
+                <div className="text-accent">HACKER</div>
                 <div>CREATOR</div>
               </div>
             </motion.div>
@@ -460,8 +509,8 @@ export default function App() {
                   <p className="text-sm text-gray-600">Drippy Dee</p>
                 </div>
               </div>
-              <div className="absolute -top-3 -left-2 md:left-4 bg-white border border-black/5 shadow-md rounded-full px-4 py-2 text-sm font-medium">Full-Stack Web Dev</div>
-              <div className="absolute top-10 -right-2 md:right-2 bg-dark text-white rounded-full px-4 py-2 text-sm font-medium">AI & Automation</div>
+              <div className="absolute -top-3 -left-2 md:left-4 bg-white border border-black/5 shadow-md rounded-full px-4 py-2 text-sm font-medium">Web Dev & AppSec</div>
+              <div className="absolute top-10 -right-2 md:right-2 bg-dark text-white rounded-full px-4 py-2 text-sm font-medium">Ethical Hacker</div>
               <div className="absolute -bottom-3 left-8 bg-accent text-white rounded-full px-4 py-2 text-sm font-medium">Content Creator</div>
             </motion.div>
 
@@ -469,7 +518,7 @@ export default function App() {
               <p className="text-accent font-semibold mb-3">About</p>
               <h2 className="font-display text-4xl md:text-5xl font-bold leading-tight mb-5">Building sharp digital experiences with code, AI, and creativity.</h2>
               <p className="text-gray-700 text-lg leading-relaxed">
-                I’m <span className="font-semibold text-ink">Daniel Adegoke Akinpelu</span> (aka <span className="font-semibold text-ink">Drippy Dee</span>) — a Web Developer, AI & Automation Builder, and Digital Content Creator based in Ibadan / Ile-Ife, NG. I craft modern web products, automate workflows with intelligent systems, and create engaging content that breaks down tech, finance, and digital culture.
+                I’m <span className="font-semibold text-ink">Daniel Adegoke Akinpelu</span> (aka <span className="font-semibold text-ink">Drippy Dee</span>) — a Web Developer, Ethical Hacker & Cybersecurity Expert, AI & Automation Builder, and Digital Content Creator based in Ibadan / Ile-Ife, NG. I craft modern web products, automate workflows with intelligent systems, and create engaging content that breaks down tech, finance, and digital culture.
               </p>
               <div className="mt-6 flex flex-wrap gap-3 text-sm">
                 <span className="inline-flex items-center gap-2 rounded-full bg-white border border-black/10 px-3 py-1.5"><MapPin size={14} className="text-accent"/> Ibadan / Ile-Ife, NG</span>
@@ -647,7 +696,7 @@ export default function App() {
               <div className="mt-8 space-y-3 text-white/85">
                 <div className="flex items-center gap-3"><Mail size={18} className="text-accent" /> Available for freelance & collaborations</div>
                 <div className="flex items-center gap-3"><MapPin size={18} className="text-accent" /> Ibadan / Ile-Ife, Nigeria</div>
-                <div className="flex items-center gap-3"><Globe size={18} className="text-accent" /> Web, AI & Automation, Content</div>
+                <div className="flex items-center gap-3"><Globe size={18} className="text-accent" /> Web, Cybersecurity, AI & Automation, Content</div>
               </div>
             </div>
             <form onSubmit={submitContact} className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 backdrop-blur">

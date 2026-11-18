@@ -838,9 +838,8 @@ export default function App() {
             </form>
           </div>
           <div className="mt-12 pt-8 border-t border-white/10 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/60">
-            <div className="text-center md:text-left space-y-1">
-              <p>© 2026 Drippy Dee (Daniel Adegoke Akinpelu). All rights reserved.</p>
-              <p>© 2026 Daniel Akinpelu (Drippy Dee) — Apex Ecosystem</p>
+            <div className="text-center md:text-left">
+              <p>© 2026 Drippy Dee (Daniel Adegoke Akinpelu) — Apex Ecosystem. All rights reserved.</p>
             </div>
             <div className="flex items-center flex-wrap justify-center gap-4">
               <a href="mailto:iniakinpelu2020@gmail.com" className="hover:text-white inline-flex items-center gap-1"><Mail size={15}/> iniakinpelu2020@gmail.com</a>

@@ -6,12 +6,26 @@ import { useGSAP } from '@gsap/react'
 import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink, BarChart3, Code, Zap, Shield } from 'lucide-react'
 import HangingBadge from './components/HangingBadge'
 import EntryIntro from './components/EntryIntro'
+import VideoClipStudio from './components/VideoClipStudio'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
 const WHATSAPP_URL = 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20book%20a%20website%20for%20my%20business.'
+const WHATSAPP_BASE = 'https://wa.me/2347038273216'
+const EMAIL_URL = 'mailto:iniakinpelu2020@gmail.com'
 const PROFILE_PHOTO = '[PASTE_YOUR_DIRECT_IMAGE_URL_HERE]'
 const hasProfilePhoto = PROFILE_PHOTO && !PROFILE_PHOTO.includes('PASTE_YOUR_DIRECT_IMAGE_URL_HERE')
+
+// Project/live links - update these with verified production URLs.
+const PROJECT_LINKS = {
+  apexos: 'mailto:iniakinpelu2020@gmail.com?subject=ApexOS%20Live%20Demo%20Request',
+  apexAi: 'https://apex-ai-9ho.pages.dev',
+  stellbeauty: 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20see%20the%20Stellbeauty%20Massage%20%26%20Spa%20demo.',
+  ivoryLens: 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20see%20the%20Ivory%20Lens%20Studio%20demo.',
+  portfolio: 'https://drippydee.vercel.app',
+  github: 'https://github.com/iniakinpelu2020-oss',
+  linkedin: 'https://www.linkedin.com/in/daniel-akinpelu',
+}
 
 const navLinks = [
   { id: 'home', label: 'Home' },
@@ -31,7 +45,7 @@ const clientProjects = [
     desc: 'Luxury wellness & spa website featuring service menus and a seamless mobile appointment booking flow.',
     tags: ['Mobile-Ready', 'Booking Flow', 'Service Menu', 'Luxury UI'],
     caseStudy: 'Designed a premium, mobile-first spa experience with clear service menus, trust-building visuals, and a frictionless appointment booking flow that helps turn visitors into booked clients.',
-    liveUrl: '#',
+    liveUrl: PROJECT_LINKS.stellbeauty,
     badge: 'Mobile-Ready',
   },
   {
@@ -41,7 +55,7 @@ const clientProjects = [
     desc: 'Modern photography studio portfolio with high-resolution galleries and session scheduling.',
     tags: ['Mobile-Ready', 'Gallery', 'Session Scheduling', 'Portfolio'],
     caseStudy: 'Built a modern studio portfolio that showcases high-resolution work beautifully on every screen, with intuitive session scheduling to convert social traffic into inquiries.',
-    liveUrl: '#',
+    liveUrl: PROJECT_LINKS.ivoryLens,
     badge: 'Mobile-Ready',
   },
 ]
@@ -54,7 +68,7 @@ const flagshipProjects = [
     desc: 'A browser-based desktop operating system featuring draggable windows, multi-app multitasking, and sandboxed iframe applications built from scratch.',
     tags: ['React', 'TypeScript', 'Sandboxed Iframes', 'Window Manager'],
     caseStudy: 'ApexOS is a browser-native desktop environment engineered from scratch with draggable window management, multi-app multitasking, and sandboxed iframe applications for safe, modular app execution.',
-    liveUrl: '#',
+    liveUrl: PROJECT_LINKS.apexos,
     ctaLabel: 'Launch Live OS',
     featured: true,
   },
@@ -65,7 +79,7 @@ const flagshipProjects = [
     desc: 'Multi-provider AI chat & workflow platform showcasing full-stack AI engineering, fast interfaces, and production-ready integrations.',
     tags: ['AI', 'Full-Stack', 'Multi-Provider', 'Workflows'],
     caseStudy: 'The Apex Ai⚡ is a multi-provider AI chat and workflow platform built for speed and flexibility, combining modern frontend UX with robust AI orchestration and deployment-ready engineering.',
-    liveUrl: 'https://apex-ai-9ho.pages.dev',
+    liveUrl: PROJECT_LINKS.apexAi,
     ctaLabel: 'View Live Project',
   },
 ]
@@ -811,7 +825,7 @@ export default function App() {
                     <h4 className="font-display text-2xl font-bold mb-2">{p.title}</h4>
                     <p className={`${p.dark ? 'text-white/75' : 'text-gray-700'} mb-5 leading-relaxed`}>{p.desc}</p>
                     <div className="flex flex-wrap gap-3">
-                      <a href={p.liveUrl} target={p.liveUrl !== '#' ? '_blank' : undefined} rel={p.liveUrl !== '#' ? 'noopener noreferrer' : undefined} onClick={(e) => { if (p.liveUrl === '#') { e.preventDefault(); setSelectedProject(p); } }} className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 font-semibold transition ${p.dark ? 'bg-white text-ink hover:bg-gray-100' : 'bg-accent text-white hover:bg-accentHover'}`}>
+                      <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 font-semibold transition ${p.dark ? 'bg-white text-ink hover:bg-gray-100' : 'bg-accent text-white hover:bg-accentHover'}`}>
                         View Live Demo <ExternalLink size={15} />
                       </a>
                       <button onClick={() => setSelectedProject(p)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 font-semibold border transition ${p.dark ? 'border-white/20 hover:bg-white/10' : 'border-black/10 hover:border-accent/40 hover:text-accent'}`}>
@@ -844,7 +858,7 @@ export default function App() {
                       <h4 className="font-display text-2xl md:text-3xl font-bold mb-3">{p.title}</h4>
                       <p className={`${p.dark ? 'text-white/75' : 'text-gray-700'} mb-6 leading-relaxed`}>{p.desc}</p>
                       <div className="flex flex-wrap gap-3">
-                        <a href={p.liveUrl} target={p.liveUrl !== '#' ? '_blank' : undefined} rel={p.liveUrl !== '#' ? 'noopener noreferrer' : undefined} onClick={(e) => { if (p.liveUrl === '#') e.preventDefault(); }} className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold transition ${p.dark ? 'bg-[#38bdf8] text-[#07090e] hover:bg-sky-300' : 'bg-accent text-white hover:bg-accentHover'}`}>
+                        <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold transition ${p.dark ? 'bg-[#38bdf8] text-[#07090e] hover:bg-sky-300' : 'bg-accent text-white hover:bg-accentHover'}`}>
                           {p.ctaLabel || 'View Live Project'} <ExternalLink size={15} />
                         </a>
                         <button onClick={() => setSelectedProject(p)} className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold border transition ${p.dark ? 'border-white/20 hover:bg-white/10' : 'border-black/10 hover:border-accent/40 hover:text-accent'}`}>
@@ -966,6 +980,17 @@ export default function App() {
         </Section>
       )}
 
+      <Section id="clip-studio" className="bg-[#F2ECEA] py-16 md:py-24 overflow-hidden">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <div className="max-w-3xl mb-10">
+            <p className="text-accent font-semibold mb-2">Social Clip Builder</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold">Create promo clips in your browser</h2>
+            <p className="mt-4 text-gray-700 text-lg">Build short vertical or square promo videos for TikTok, Reels, and Shorts with animated templates for ApexOS, Apex AI, client concepts, and your portfolio. Zero API cost, recorded locally with MediaRecorder.</p>
+          </div>
+          <VideoClipStudio />
+        </div>
+      </Section>
+
       <Section id="process" className="bg-light py-16 md:py-20 border-y border-black/5">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
@@ -1048,9 +1073,9 @@ export default function App() {
               <p>© 2026 Drippy Dee (Daniel Adegoke Akinpelu) — Apex Ecosystem. All rights reserved.</p>
             </div>
             <div className="flex items-center flex-wrap justify-center gap-4">
-              <a href="mailto:iniakinpelu2020@gmail.com" className="hover:text-white inline-flex items-center gap-1"><Mail size={15}/> iniakinpelu2020@gmail.com</a>
-              <a href="#" className="hover:text-white inline-flex items-center gap-1"><Github size={15}/> GitHub</a>
-              <a href="#" className="hover:text-white inline-flex items-center gap-1"><Linkedin size={15}/> LinkedIn</a>
+              <a href={EMAIL_URL} className="hover:text-white inline-flex items-center gap-1"><Mail size={15}/> iniakinpelu2020@gmail.com</a>
+              <a href={PROJECT_LINKS.github} target="_blank" rel="noopener noreferrer" className="hover:text-white inline-flex items-center gap-1"><Github size={15}/> GitHub</a>
+              <a href={PROJECT_LINKS.linkedin} target="_blank" rel="noopener noreferrer" className="hover:text-white inline-flex items-center gap-1"><Linkedin size={15}/> LinkedIn</a>
             </div>
           </div>
         </div>

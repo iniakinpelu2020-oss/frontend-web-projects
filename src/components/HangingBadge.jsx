@@ -24,18 +24,18 @@ export default function HangingBadge() {
   }
 
   return (
-    <div className="relative w-[280px] sm:w-[320px] md:w-[340px] h-[520px] md:h-[560px] flex items-start justify-center select-none">
+    <div className="relative w-[260px] sm:w-[320px] md:w-[340px] h-[480px] sm:h-[520px] md:h-[560px] flex items-start justify-center select-none overflow-visible">
       <motion.div
         className="relative origin-top"
         animate={{ rotate: [1.2, -1.2, 1.2] }}
         transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
         style={{ transformOrigin: 'top center' }}
       >
-        <div className="absolute left-1/2 -translate-x-1/2 -top-2 w-1.5 h-16 bg-gradient-to-b from-gray-300 to-gray-500 rounded-full shadow" />
-        <div className="absolute left-1/2 -translate-x-1/2 top-12 w-10 h-10 rounded-full border-4 border-gray-300 bg-dark z-10" />
+        <div className="absolute left-1/2 -translate-x-1/2 top-0 w-1.5 h-12 sm:h-16 bg-gradient-to-b from-gray-300 to-gray-500 rounded-full shadow" />
+        <div className="absolute left-1/2 -translate-x-1/2 top-10 sm:top-14 w-9 h-9 sm:w-10 sm:h-10 rounded-full border-4 border-gray-300 bg-dark z-10" />
 
         <motion.div
-          className="mt-16 perspective-1000"
+          className="mt-14 sm:mt-16 perspective-1000"
           style={{ rotateX, rotateY }}
           onMouseMove={onMove}
           onMouseLeave={onLeave}

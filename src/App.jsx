@@ -6,7 +6,6 @@ import { useGSAP } from '@gsap/react'
 import { Menu, X, ArrowRight, Send, Sparkles, Mail, MapPin, Github, Linkedin, Globe, CheckCircle2, XCircle, ExternalLink, BarChart3, Code, Zap, Shield } from 'lucide-react'
 import HangingBadge from './components/HangingBadge'
 import EntryIntro from './components/EntryIntro'
-import VideoClipStudio from './components/VideoClipStudio'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
@@ -18,10 +17,10 @@ const hasProfilePhoto = PROFILE_PHOTO && !PROFILE_PHOTO.includes('PASTE_YOUR_DIR
 
 // Project/live links - update these with verified production URLs.
 const PROJECT_LINKS = {
-  apexos: 'mailto:iniakinpelu2020@gmail.com?subject=ApexOS%20Live%20Demo%20Request',
+  apexos: 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20see%20the%20ApexOS%20live%20demo.',
   apexAi: 'https://apex-ai-9ho.pages.dev',
-  stellbeauty: 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20see%20the%20Stellbeauty%20Massage%20%26%20Spa%20demo.',
-  ivoryLens: 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20see%20the%20Ivory%20Lens%20Studio%20demo.',
+  stellbeauty: 'https://stellbeauty-massage-spa.pages.dev',
+  autoDoctor: 'https://auto-doctor.pages.dev',
   portfolio: 'https://drippydee.vercel.app',
   github: 'https://github.com/iniakinpelu2020-oss',
   linkedin: 'https://www.linkedin.com/in/daniel-akinpelu',
@@ -49,13 +48,13 @@ const clientProjects = [
     badge: 'Mobile-Ready',
   },
   {
-    title: 'Ivory Lens Studio',
+    title: 'Auto Doctor Manchester',
     category: 'Client Concept',
     dark: true,
-    desc: 'Modern photography studio portfolio with high-resolution galleries and session scheduling.',
-    tags: ['Mobile-Ready', 'Gallery', 'Session Scheduling', 'Portfolio'],
-    caseStudy: 'Built a modern studio portfolio that showcases high-resolution work beautifully on every screen, with intuitive session scheduling to convert social traffic into inquiries.',
-    liveUrl: PROJECT_LINKS.ivoryLens,
+    desc: 'Car repair, servicing & diagnostics landing page in South Manchester with instant repair booking, call/directions CTAs, and 5.0-star customer proof.',
+    tags: ['Mobile-Ready', 'Instant Booking', 'Call/Direction CTAs', '5.0-Star Proof'],
+    caseStudy: 'Built a conversion-focused landing page for Auto Doctor Manchester that makes it easy for local drivers to book repairs, call instantly, get directions, and trust the service through clear 5.0-star customer proof.',
+    liveUrl: PROJECT_LINKS.autoDoctor,
     badge: 'Mobile-Ready',
   },
 ]
@@ -69,7 +68,7 @@ const flagshipProjects = [
     tags: ['React', 'TypeScript', 'Sandboxed Iframes', 'Window Manager'],
     caseStudy: 'ApexOS is a browser-native desktop environment engineered from scratch with draggable window management, multi-app multitasking, and sandboxed iframe applications for safe, modular app execution.',
     liveUrl: PROJECT_LINKS.apexos,
-    ctaLabel: 'Launch Live OS',
+    ctaLabel: 'Request Live Demo',
     featured: true,
   },
   {
@@ -431,6 +430,7 @@ function SecAuditPreview() {
 
 function DeviceFrame({ dark, title }) {
   const isSpa = title.includes('Stellbeauty')
+  const isAuto = title.includes('Auto Doctor')
   return (
     <div className={`relative rounded-2xl border ${dark ? 'border-white/10 bg-[#111827]' : 'border-black/10 bg-[#f8fafc]'} p-3 md:p-4 overflow-hidden`}>
       <div className="flex items-center gap-1.5 mb-3">
@@ -440,26 +440,26 @@ function DeviceFrame({ dark, title }) {
         <div className={`ml-3 h-5 flex-1 rounded-full ${dark ? 'bg-white/10' : 'bg-black/5'}`} />
       </div>
       <div className={`rounded-xl overflow-hidden border ${dark ? 'border-white/10 bg-[#0b1220]' : 'border-black/10 bg-white'}`}>
-        <div className={`h-28 md:h-32 ${isSpa ? 'bg-gradient-to-br from-[#f5d0c5] via-[#fff1ec] to-[#fde68a]/40' : 'bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900'} relative`}>
+        <div className={`h-28 md:h-32 ${isSpa ? 'bg-gradient-to-br from-[#f5d0c5] via-[#fff1ec] to-[#fde68a]/40' : isAuto ? 'bg-gradient-to-br from-[#0f172a] via-[#1d4ed8]/40 to-[#111827]' : 'bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900'} relative`}>
           <div className="absolute inset-0 flex items-end p-4">
             <div>
-              <div className={`text-xs uppercase tracking-[0.2em] mb-1 ${isSpa ? 'text-[#7c2d12]/70' : 'text-white/60'}`}>{isSpa ? 'Luxury Wellness' : 'Photography Studio'}</div>
-              <div className={`font-display text-xl md:text-2xl font-bold ${isSpa ? 'text-[#431407]' : 'text-white'}`}>{isSpa ? 'Stellbeauty' : 'Ivory Lens'}</div>
+              <div className={`text-xs uppercase tracking-[0.2em] mb-1 ${isSpa ? 'text-[#7c2d12]/70' : 'text-white/60'}`}>{isSpa ? 'Luxury Wellness' : isAuto ? 'Car Repair & Diagnostics' : 'Photography Studio'}</div>
+              <div className={`font-display text-xl md:text-2xl font-bold ${isSpa ? 'text-[#431407]' : 'text-white'}`}>{isSpa ? 'Stellbeauty' : isAuto ? 'Auto Doctor' : 'Ivory Lens'}</div>
             </div>
           </div>
         </div>
         <div className={`p-3 grid grid-cols-3 gap-2 ${dark ? 'bg-[#0b1220]' : 'bg-white'}`}>
           {[0,1,2].map(i => (
-            <div key={i} className={`h-14 rounded-lg ${isSpa ? ['bg-[#fde7df]','bg-[#fce7f3]','bg-[#fef3c7]'][i] : ['bg-slate-700','bg-slate-600','bg-slate-800'][i]}`} />
+            <div key={i} className={`h-14 rounded-lg ${isSpa ? ['bg-[#fde7df]','bg-[#fce7f3]','bg-[#fef3c7]'][i] : isAuto ? ['bg-blue-500/20','bg-emerald-500/20','bg-slate-700'][i] : ['bg-slate-700','bg-slate-600','bg-slate-800'][i]}`} />
           ))}
         </div>
         <div className="p-3 pt-0">
-          <div className={`rounded-lg px-3 py-2 text-xs font-semibold text-center ${isSpa ? 'bg-[#7c2d12] text-white' : 'bg-white text-slate-900'}`}>
-            {isSpa ? 'Book Appointment' : 'Schedule Session'}
+          <div className={`rounded-lg px-3 py-2 text-xs font-semibold text-center ${isSpa ? 'bg-[#7c2d12] text-white' : isAuto ? 'bg-blue-600 text-white' : 'bg-white text-slate-900'}`}>
+            {isSpa ? 'Book Appointment' : isAuto ? 'Book Repair Now' : 'Schedule Session'}
           </div>
         </div>
       </div>
-      <div className="absolute top-4 right-4 rounded-full bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 shadow">Mobile-Ready</div>
+      <div className="absolute top-4 right-4 rounded-full bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 shadow">{isAuto ? '5.0★ Proof' : 'Mobile-Ready'}</div>
     </div>
   )
 }
@@ -532,7 +532,7 @@ function ProjectPreview({ title }) {
   if (title === 'The Insight Desk (@InsightDeskHQ)') return <InsightDeskPreview />
   if (title === 'SecAudit // Vulnerability & Pentest Suite') return <SecAuditPreview />
   if (title.includes('Stellbeauty')) return <DeviceFrame dark={false} title={title} />
-  if (title.includes('Ivory Lens')) return <DeviceFrame dark={true} title={title} />
+  if (title.includes('Auto Doctor')) return <DeviceFrame dark={true} title={title} />
   return <ScrollShowcasePreview />
 }
 
@@ -653,7 +653,7 @@ export default function App() {
       </div>
 
       {showIntro && <EntryIntro onComplete={() => setShowIntro(false)} />}
-      <Section id="home" className="relative z-20 overflow-hidden bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-10 md:pb-14">
+      <Section id="home" className="relative z-20 overflow-x-hidden overflow-y-visible bg-[#160D11] text-white min-h-screen pt-28 md:pt-32 pb-10 md:pb-14">
         <div className="absolute inset-0 bg-gradient-to-b from-[#1E0F15] to-[#160D11]" />
         <div className="relative mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-6 min-h-[70vh]">
@@ -716,7 +716,7 @@ export default function App() {
       <Section id="about" className="bg-light py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative">
+            <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="relative px-2 sm:px-0">
               <div className="relative mx-auto max-w-md aspect-[4/5] rounded-3xl bg-white border border-black/5 shadow-xl overflow-hidden">
                 {hasProfilePhoto ? (
                   <img src={PROFILE_PHOTO} alt="Drippy Dee" className="absolute inset-0 h-full w-full object-cover" />
@@ -731,9 +731,9 @@ export default function App() {
                   <p className="text-sm text-gray-600">Drippy Dee</p>
                 </div>
               </div>
-              <div className="absolute -top-3 -left-2 md:left-4 bg-white border border-black/5 shadow-md rounded-full px-4 py-2 text-sm font-medium">Web Dev & AppSec</div>
-              <div className="absolute top-10 -right-2 md:right-2 bg-dark text-white rounded-full px-4 py-2 text-sm font-medium">Ethical Hacker</div>
-              <div className="absolute -bottom-3 left-8 bg-accent text-white rounded-full px-4 py-2 text-sm font-medium">Content Creator</div>
+              <div className="absolute -top-3 left-2 md:left-4 bg-white border border-black/5 shadow-md rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium">Web Dev & AppSec</div>
+              <div className="absolute top-10 right-2 md:right-2 bg-dark text-white rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium">Ethical Hacker</div>
+              <div className="absolute -bottom-3 left-6 sm:left-8 bg-accent text-white rounded-full px-3 sm:px-4 py-2 text-xs sm:text-sm font-medium">Content Creator</div>
             </motion.div>
 
             <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.05 }}>
@@ -979,17 +979,6 @@ export default function App() {
           </div>
         </Section>
       )}
-
-      <Section id="clip-studio" className="bg-[#F2ECEA] py-16 md:py-24 overflow-hidden">
-        <div className="mx-auto max-w-7xl px-4 md:px-8">
-          <div className="max-w-3xl mb-10">
-            <p className="text-accent font-semibold mb-2">Social Clip Builder</p>
-            <h2 className="font-display text-4xl md:text-5xl font-bold">Create promo clips in your browser</h2>
-            <p className="mt-4 text-gray-700 text-lg">Build short vertical or square promo videos for TikTok, Reels, and Shorts with animated templates for ApexOS, Apex AI, client concepts, and your portfolio. Zero API cost, recorded locally with MediaRecorder.</p>
-          </div>
-          <VideoClipStudio />
-        </div>
-      </Section>
 
       <Section id="process" className="bg-light py-16 md:py-20 border-y border-black/5">
         <div className="mx-auto max-w-7xl px-4 md:px-8">

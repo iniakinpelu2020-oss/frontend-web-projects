@@ -9,67 +9,89 @@ import EntryIntro from './components/EntryIntro'
 
 gsap.registerPlugin(useGSAP, ScrollTrigger)
 
-const WHATSAPP_URL = 'https://wa.me/2347038273216?text=Hey%20Drippy%20Dee%2C%20I%20want%20to%20work%20with%20you%20on%20a%20project'
+const WHATSAPP_URL = 'https://wa.me/2347038273216?text=Hi%20Drippy%20Dee%2C%20I%27d%20like%20to%20book%20a%20website%20for%20my%20business.'
 const PROFILE_PHOTO = '[PASTE_YOUR_DIRECT_IMAGE_URL_HERE]'
 const hasProfilePhoto = PROFILE_PHOTO && !PROFILE_PHOTO.includes('PASTE_YOUR_DIRECT_IMAGE_URL_HERE')
 
 const navLinks = [
   { id: 'home', label: 'Home' },
-  { id: 'about', label: 'About' },
-  { id: 'ecosystem', label: 'Ecosystem' },
   { id: 'projects', label: 'Projects' },
-  { id: 'creator', label: 'Creator' },
-  { id: 'blog', label: 'Blog' },
+  { id: 'process', label: 'How It Works' },
+  { id: 'about', label: 'About' },
+  { id: 'contact', label: 'Contact' },
 ]
 
 const roles = ['Web Developer', 'Ethical Hacker & Cybersecurity Expert', 'AI & Automation Builder', 'Content Creator']
 
-const projects = [
+const clientProjects = [
   {
-    title: 'Apex AI',
-    category: 'Web Dev',
-    dark: true,
-    desc: 'Custom AI web frontend built with HTML, CSS, JavaScript, and serverless deployment.',
-    tags: ['HTML', 'CSS', 'JavaScript', 'Serverless'],
-    caseStudy: 'Apex AI delivers a fast, conversational interface with clean UI, streaming-friendly UX patterns, and lightweight deployment for rapid iteration.',
-    liveUrl: 'https://apex-ai-9ho.pages.dev',
+    title: 'Stellbeauty Massage & Spa',
+    category: 'Client Concept',
+    dark: false,
+    desc: 'Luxury wellness & spa website featuring service menus and a seamless mobile appointment booking flow.',
+    tags: ['Mobile-Ready', 'Booking Flow', 'Service Menu', 'Luxury UI'],
+    caseStudy: 'Designed a premium, mobile-first spa experience with clear service menus, trust-building visuals, and a frictionless appointment booking flow that helps turn visitors into booked clients.',
+    liveUrl: '#',
+    badge: 'Mobile-Ready',
   },
+  {
+    title: 'Ivory Lens Studio',
+    category: 'Client Concept',
+    dark: true,
+    desc: 'Modern photography studio portfolio with high-resolution galleries and session scheduling.',
+    tags: ['Mobile-Ready', 'Gallery', 'Session Scheduling', 'Portfolio'],
+    caseStudy: 'Built a modern studio portfolio that showcases high-resolution work beautifully on every screen, with intuitive session scheduling to convert social traffic into inquiries.',
+    liveUrl: '#',
+    badge: 'Mobile-Ready',
+  },
+]
+
+const flagshipProjects = [
+  {
+    title: 'ApexOS — Interactive Web Desktop Environment',
+    category: 'Flagship Engineering',
+    dark: true,
+    desc: 'A browser-based desktop operating system featuring draggable windows, multi-app multitasking, and sandboxed iframe applications built from scratch.',
+    tags: ['React', 'TypeScript', 'Sandboxed Iframes', 'Window Manager'],
+    caseStudy: 'ApexOS is a browser-native desktop environment engineered from scratch with draggable window management, multi-app multitasking, and sandboxed iframe applications for safe, modular app execution.',
+    liveUrl: '#',
+    ctaLabel: 'Launch Live OS',
+    featured: true,
+  },
+  {
+    title: 'The Apex Ai⚡',
+    category: 'Flagship Engineering',
+    dark: false,
+    desc: 'Multi-provider AI chat & workflow platform showcasing full-stack AI engineering, fast interfaces, and production-ready integrations.',
+    tags: ['AI', 'Full-Stack', 'Multi-Provider', 'Workflows'],
+    caseStudy: 'The Apex Ai⚡ is a multi-provider AI chat and workflow platform built for speed and flexibility, combining modern frontend UX with robust AI orchestration and deployment-ready engineering.',
+    liveUrl: 'https://apex-ai-9ho.pages.dev',
+    ctaLabel: 'View Live Project',
+  },
+]
+
+const projects = [
+  ...clientProjects,
+  ...flagshipProjects,
   {
     title: 'WhatsApp AI Auto-Reply Bot',
     category: 'AI & Bots',
-    dark: false,
+    dark: true,
     desc: 'Automated Node.js + Gemini API WhatsApp integration for smart real-time responses.',
     tags: ['Node.js', 'Gemini API', 'Automation'],
     caseStudy: 'Designed an event-driven bot pipeline that parses incoming messages, routes intents, and responds with context-aware replies while logging interactions.',
   },
   {
-    title: 'The Insight Desk (@InsightDeskHQ)',
-    category: 'UI/UX',
-    dark: true,
-    desc: 'Educational & personal finance digital media hub and breakdown platform.',
-    tags: ['Content', 'Branding', 'UI/UX'],
-    caseStudy: 'Built a content-forward experience focused on clarity, trust, and repeat engagement for tech and finance breakdowns.',
-    liveUrl: 'https://youtube.com/@InsightDeskHQ',
-  },
-  {
-    title: 'Interactive Scroll-Render Showcase',
-    category: 'HTML/CSS/JS',
-    dark: false,
-    desc: 'High-FPS SVG filter & scroll-driven product reveal experience.',
-    tags: ['SVG', 'Scroll Animations', 'Performance'],
-    caseStudy: 'A performance-minded showcase using scroll progress to orchestrate reveals and filters while maintaining smooth 60fps interactions.',
-  },
-  {
     title: 'SecAudit // Vulnerability & Pentest Suite',
     category: 'AI & Security',
-    dark: true,
+    dark: false,
     desc: 'Offensive security assessment toolkit for web apps: automated scans, vulnerability triage, and remediation guidance.',
     tags: ['Ethical Hacking', 'AppSec', 'Penetration Testing', 'Security Audit'],
     caseStudy: 'Conducted offensive security testing across web surfaces with responsible disclosure workflows. Findings were validated, prioritized by risk, and remediated with hardened configurations and secure coding fixes, resulting in a clean audit baseline: OWASP Top 10 coverage and 0 critical vulnerabilities.',
   },
 ]
 
-const filters = ['All', 'Web Dev', 'AI & Bots', 'AI & Security', 'HTML/CSS/JS', 'UI/UX']
+const filters = ['All', 'Client Concept', 'Flagship Engineering', 'AI & Bots', 'AI & Security']
 
 const blogPosts = [
   { title: 'Building Apex AI: Lessons from a Custom Frontend', category: 'Tech Life', excerpt: 'What I learned designing a fast AI interface with vanilla web tech and serverless deployment.', body: 'From prompt UX to performance budgets, building Apex AI reinforced that clarity and speed matter as much as model quality. I focused on lean UI, resilient API handling, and iteration loops that made shipping improvements easy.' },
@@ -393,11 +415,110 @@ function SecAuditPreview() {
   )
 }
 
+function DeviceFrame({ dark, title }) {
+  const isSpa = title.includes('Stellbeauty')
+  return (
+    <div className={`relative rounded-2xl border ${dark ? 'border-white/10 bg-[#111827]' : 'border-black/10 bg-[#f8fafc]'} p-3 md:p-4 overflow-hidden`}>
+      <div className="flex items-center gap-1.5 mb-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-red-400/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-amber-400/80" />
+        <span className="h-2.5 w-2.5 rounded-full bg-emerald-400/80" />
+        <div className={`ml-3 h-5 flex-1 rounded-full ${dark ? 'bg-white/10' : 'bg-black/5'}`} />
+      </div>
+      <div className={`rounded-xl overflow-hidden border ${dark ? 'border-white/10 bg-[#0b1220]' : 'border-black/10 bg-white'}`}>
+        <div className={`h-28 md:h-32 ${isSpa ? 'bg-gradient-to-br from-[#f5d0c5] via-[#fff1ec] to-[#fde68a]/40' : 'bg-gradient-to-br from-slate-900 via-slate-700 to-slate-900'} relative`}>
+          <div className="absolute inset-0 flex items-end p-4">
+            <div>
+              <div className={`text-xs uppercase tracking-[0.2em] mb-1 ${isSpa ? 'text-[#7c2d12]/70' : 'text-white/60'}`}>{isSpa ? 'Luxury Wellness' : 'Photography Studio'}</div>
+              <div className={`font-display text-xl md:text-2xl font-bold ${isSpa ? 'text-[#431407]' : 'text-white'}`}>{isSpa ? 'Stellbeauty' : 'Ivory Lens'}</div>
+            </div>
+          </div>
+        </div>
+        <div className={`p-3 grid grid-cols-3 gap-2 ${dark ? 'bg-[#0b1220]' : 'bg-white'}`}>
+          {[0,1,2].map(i => (
+            <div key={i} className={`h-14 rounded-lg ${isSpa ? ['bg-[#fde7df]','bg-[#fce7f3]','bg-[#fef3c7]'][i] : ['bg-slate-700','bg-slate-600','bg-slate-800'][i]}`} />
+          ))}
+        </div>
+        <div className="p-3 pt-0">
+          <div className={`rounded-lg px-3 py-2 text-xs font-semibold text-center ${isSpa ? 'bg-[#7c2d12] text-white' : 'bg-white text-slate-900'}`}>
+            {isSpa ? 'Book Appointment' : 'Schedule Session'}
+          </div>
+        </div>
+      </div>
+      <div className="absolute top-4 right-4 rounded-full bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 shadow">Mobile-Ready</div>
+    </div>
+  )
+}
+
+function ApexOSPreview() {
+  return (
+    <div className="rounded-xl border border-[#38bdf8]/20 bg-[#05080f] text-white p-3 h-full min-h-[260px] overflow-hidden">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2 text-xs text-[#93c5fd]"><Code size={14} className="text-[#38bdf8]" /> ApexOS Desktop</div>
+        <span className="text-[10px] px-2 py-1 rounded-full bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/20">Live Environment</span>
+      </div>
+      <div className="relative rounded-lg border border-white/10 bg-gradient-to-br from-[#0f172a] to-[#020617] h-[210px] overflow-hidden">
+        <div className="absolute top-3 left-3 w-[62%] rounded-lg border border-white/10 bg-[#111827]/95 shadow-xl">
+          <div className="flex items-center gap-1.5 px-2 py-1.5 border-b border-white/10">
+            <span className="h-2 w-2 rounded-full bg-red-400" /><span className="h-2 w-2 rounded-full bg-amber-400" /><span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="ml-2 text-[10px] text-white/60">Apex AI</span>
+          </div>
+          <div className="p-2 space-y-1.5">
+            <div className="h-2 rounded bg-white/10 w-3/4" />
+            <div className="h-2 rounded bg-[#38bdf8]/30 w-full" />
+            <div className="h-2 rounded bg-white/10 w-5/6" />
+          </div>
+        </div>
+        <div className="absolute bottom-10 right-3 w-[45%] rounded-lg border border-[#38bdf8]/20 bg-[#0b1220]/95 shadow-xl">
+          <div className="flex items-center gap-1.5 px-2 py-1.5 border-b border-white/10">
+            <span className="h-2 w-2 rounded-full bg-red-400" /><span className="h-2 w-2 rounded-full bg-amber-400" /><span className="h-2 w-2 rounded-full bg-emerald-400" />
+            <span className="ml-2 text-[10px] text-white/60">Terminal</span>
+          </div>
+          <div className="p-2 font-mono text-[10px] text-emerald-300 space-y-1">
+            <div>$ apex run</div>
+            <div className="text-[#38bdf8]">sandbox: ready</div>
+          </div>
+        </div>
+        <div className="absolute bottom-0 inset-x-0 h-8 bg-black/40 border-t border-white/10 flex items-center px-3 gap-2">
+          {['AI','Files','Code','Web'].map(a => <span key={a} className="text-[10px] px-2 py-0.5 rounded bg-white/10 text-white/70">{a}</span>)}
+        </div>
+      </div>
+    </div>
+  )
+}
+
+function ApexAiPreview() {
+  const [text, setText] = useState('')
+  const full = 'Routing prompt → Gemini + Workers AI...\n✓ Workflow generated\n✓ Response streamed\n✓ Ready to deploy'
+  useEffect(() => {
+    setText('')
+    let i = 0
+    const id = setInterval(() => { i += 2; setText(full.slice(0, i)); if (i >= full.length) clearInterval(id) }, 28)
+    return () => clearInterval(id)
+  }, [])
+  return (
+    <div className="rounded-xl border border-white/10 bg-[#0b0f17] text-white p-3 h-full min-h-[260px] flex flex-col">
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2 text-xs text-white/70"><Zap size={14} className="text-accent" /> The Apex Ai⚡</div>
+        <span className="text-[10px] px-2 py-1 rounded-full bg-accent/15 text-accent border border-accent/20">Multi-provider</span>
+      </div>
+      <div className="rounded-lg bg-white/5 border border-white/10 p-3 text-xs text-white/70 mb-2">Prompt: Build a customer support workflow for my business.</div>
+      <div className="relative flex-1 rounded-lg bg-black/40 border border-accent/20 p-3 font-mono text-[11px] leading-relaxed text-emerald-300 overflow-hidden">
+        <pre className="whitespace-pre-wrap">{text}<span className="animate-pulse">▋</span></pre>
+      </div>
+    </div>
+  )
+}
+
 function ProjectPreview({ title }) {
   if (title === 'Apex AI') return <ApexPreview />
+  if (title === 'ApexOS — Interactive Web Desktop Environment') return <ApexOSPreview />
+  if (title === 'The Apex Ai⚡') return <ApexAiPreview />
   if (title === 'WhatsApp AI Auto-Reply Bot') return <WhatsAppPreview />
   if (title === 'The Insight Desk (@InsightDeskHQ)') return <InsightDeskPreview />
   if (title === 'SecAudit // Vulnerability & Pentest Suite') return <SecAuditPreview />
+  if (title.includes('Stellbeauty')) return <DeviceFrame dark={false} title={title} />
+  if (title.includes('Ivory Lens')) return <DeviceFrame dark={true} title={title} />
   return <ScrollShowcasePreview />
 }
 
@@ -408,7 +529,7 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null)
   const [selectedPost, setSelectedPost] = useState(null)
   const [toast, setToast] = useState(null)
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [form, setForm] = useState({ name: '', businessType: '', contact: '', details: '' })
   const [sending, setSending] = useState(false)
   const toastTimer = useRef(null)
   const [showIntro, setShowIntro] = useState(true)
@@ -440,21 +561,28 @@ export default function App() {
     setSending(true)
     setFormStatus(null)
     try {
+      const contact = form.contact.trim()
+      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contact)
+      const payload = {
+        name: form.name.trim(),
+        email: isEmail ? contact : 'quickquote@drippydee.com',
+        message: `Business Type: ${form.businessType}\nWhatsApp/Email: ${contact}\n\nProject Details:\n${form.details}`,
+      }
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(form),
+        body: JSON.stringify(payload),
       })
       const text = await res.text()
       let data = {}
       try { data = text ? JSON.parse(text) : {} } catch { data = {} }
       if (!res.ok || data.ok === false) throw new Error(data.error || 'Failed to send message')
-      setForm({ name: '', email: '', message: '' })
-      const msg = data.message || "Message sent! I'll reply shortly."
+      setForm({ name: '', businessType: '', contact: '', details: '' })
+      const msg = data.message || "Message sent! I'll reply within 24 hours."
       setFormStatus({ type: 'success', message: msg })
       showToast('success', msg)
     } catch (err) {
-      const msg = err?.message || 'Something went wrong. Please try again.'
+      const msg = err?.message || 'Something went wrong. Please try again or chat on WhatsApp.'
       setFormStatus({ type: 'error', message: msg })
       showToast('error', msg)
     } finally {
@@ -479,7 +607,7 @@ export default function App() {
   }, { scope: appRef })
 
   return (
-    <div ref={appRef} className="min-h-screen bg-light text-ink">
+    <div ref={appRef} className="min-h-screen bg-light text-ink overflow-x-hidden">
       <Toast toast={toast} onClose={() => setToast(null)} />
       <div className="fixed top-4 left-0 right-0 z-[60] px-4">
         <div className="mx-auto max-w-6xl">
@@ -516,10 +644,24 @@ export default function App() {
         <div className="relative mx-auto max-w-7xl px-4 md:px-8">
           <div className="grid lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-6 min-h-[70vh]">
             <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }} className="order-2 lg:order-1 text-center lg:text-left">
-              <div className="font-display font-bold leading-[0.9] tracking-tight text-[2.6rem] sm:text-[3.8rem] md:text-[4.6rem] lg:text-[5.2rem]">
-                <div>WEB &amp;</div>
-                <div className="text-accent">AI</div>
-                <div>SECURITY</div>
+              <p className="text-accent font-semibold tracking-wide uppercase text-sm md:text-base mb-3">Drippy Dee · Web Designer & Developer</p>
+              <h1 className="font-display font-bold leading-[0.95] tracking-tight text-[2.5rem] sm:text-[3.4rem] md:text-[4.2rem] lg:text-[4.8rem]">
+                <span className="block">Websites that get</span>
+                <span className="block text-accent">more clients</span>
+                <span className="block">&amp; bookings.</span>
+              </h1>
+              <p className="mt-5 text-base sm:text-lg text-white/75 max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                Fast, custom, mobile-first websites built to turn your TikTok and Instagram traffic into real inquiries. <span className="text-white font-semibold">Delivered in 48–72 hours. Zero bloat.</span>
+              </p>
+              <div className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 justify-center lg:justify-start">
+                <motion.button whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => navigate('projects')} className="inline-flex items-center justify-center gap-2 rounded-full bg-accent hover:bg-accentHover px-7 py-3.5 font-semibold shadow-lg shadow-accent/30 transition">View Live Work <ArrowRight size={18} /></motion.button>
+                <motion.button whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.98 }} onClick={() => navigate('contact')} className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 hover:border-accent/60 hover:bg-white/5 px-7 py-3.5 font-semibold transition text-white">Book a Website <Mail size={18} /></motion.button>
+                <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-emerald-400/40 bg-emerald-500/10 hover:bg-emerald-500/20 px-7 py-3.5 font-semibold transition text-emerald-300">Chat on WhatsApp <ExternalLink size={16} /></a>
+              </div>
+              <div className="mt-6 flex flex-wrap justify-center lg:justify-start gap-3 text-xs sm:text-sm text-white/60">
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5"><CheckCircle2 size={14} className="text-accent" /> Mobile-first design</span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5"><CheckCircle2 size={14} className="text-accent" /> 48–72 hour delivery</span>
+                <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1.5"><CheckCircle2 size={14} className="text-accent" /> Built to convert</span>
               </div>
             </motion.div>
 
@@ -527,29 +669,22 @@ export default function App() {
               <HangingBadge />
             </div>
 
-            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="order-3 text-center lg:text-right">
-              <div className="font-display font-bold leading-[0.9] tracking-tight text-[2.6rem] sm:text-[3.8rem] md:text-[4.6rem] lg:text-[5.2rem]">
-                <div>DEV &amp; ETHICAL</div>
-                <div className="text-accent">HACKER</div>
-                <div>CREATOR</div>
+            <motion.div initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7, delay: 0.1 }} className="order-3 hidden lg:block text-right">
+              <div className="inline-flex flex-col gap-4 text-left max-w-xs ml-auto">
+                <div className="rounded-2xl border border-white/10 bg-white/5 backdrop-blur p-5">
+                  <p className="text-xs uppercase tracking-wider text-white/50 mb-2">Perfect for</p>
+                  <ul className="space-y-2 text-sm text-white/85">
+                    <li className="flex gap-2"><CheckCircle2 size={16} className="text-accent mt-0.5 shrink-0" /> Spas, salons & local services</li>
+                    <li className="flex gap-2"><CheckCircle2 size={16} className="text-accent mt-0.5 shrink-0" /> Creators & personal brands</li>
+                    <li className="flex gap-2"><CheckCircle2 size={16} className="text-accent mt-0.5 shrink-0" /> Studios & portfolios</li>
+                  </ul>
+                </div>
+                <div className="rounded-2xl border border-[#38bdf8]/20 bg-[#38bdf8]/5 p-5">
+                  <p className="text-xs uppercase tracking-wider text-[#38bdf8]/80 mb-2">Also building</p>
+                  <p className="text-sm text-white/85">ApexOS & Apex AI — flagship engineering systems showcased below.</p>
+                </div>
               </div>
             </motion.div>
-          </div>
-          <div className="mt-8 md:mt-10 flex flex-col items-center gap-5 px-2">
-            <div className="flex flex-col items-center text-center max-w-3xl">
-              <span className="inline-flex items-center rounded-full border border-[#38bdf8]/30 bg-[#38bdf8]/10 px-3 py-1 text-xs sm:text-sm font-medium text-[#38bdf8] mb-3">
-                Founder &amp; Systems Architect · Apex Ecosystem &amp; ApexOS
-              </span>
-              <p className="text-sm sm:text-base md:text-lg text-white/75 leading-relaxed">
-                Architecting the Apex Ecosystem &amp; ApexOS — a lightweight, privacy-first operating system, edge AI router, encrypted vault, and productivity suite built for independent hardware and sovereign users.
-              </p>
-            </div>
-            <div className="flex flex-wrap justify-center gap-3">
-              <motion.button whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.98 }} onClick={openWhatsApp} className="inline-flex items-center gap-2 rounded-full bg-accent hover:bg-accentHover px-7 py-3.5 font-semibold shadow-lg shadow-accent/30 transition">Work with me <ArrowRight size={18} /></motion.button>
-              <a href="mailto:iniakinpelu2020@gmail.com" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#38bdf8] hover:bg-sky-300 text-[#07090e] px-6 py-3.5 font-semibold transition">Contact for OEM &amp; Partnerships <Mail size={16} /></a>
-              <a href="https://apex-ai-9ho.pages.dev" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-[#38bdf8]/40 bg-white/5 hover:bg-[#38bdf8]/10 text-[#38bdf8] px-6 py-3.5 font-semibold transition">Launch Apex AI <ExternalLink size={16} /></a>
-              <a href="https://apexaicoder.pages.dev" target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 hover:border-[#38bdf8]/40 hover:text-[#38bdf8] px-6 py-3.5 font-semibold transition text-white">Open Apex Studio <ExternalLink size={16} /></a>
-            </div>
           </div>
         </div>
         <div className="relative mt-12 border-y border-white/10 bg-black/20 overflow-hidden">
@@ -646,47 +781,84 @@ export default function App() {
         </div>
       </Section>
 
-      <Section id="projects" className="bg-[#F2ECEA] py-16 md:py-24">
+      <Section id="projects" className="bg-[#F2ECEA] py-16 md:py-24 overflow-hidden">
         <div className="mx-auto max-w-7xl px-4 md:px-8">
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-8">
-            <div>
-              <p className="text-accent font-semibold mb-2">My Projects</p>
-              <h2 className="font-display text-4xl md:text-5xl font-bold">Selected work & experiments</h2>
+          <div className="max-w-3xl mb-12">
+            <p className="text-accent font-semibold mb-2">Live Work & Flagship Builds</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold leading-tight">Websites that convert. Systems that impress.</h2>
+            <p className="mt-4 text-gray-700 text-lg">Client-ready business designs for fast bookings, plus flagship engineering projects that prove serious technical depth.</p>
+          </div>
+
+          <div className="mb-14">
+            <div className="flex items-center gap-3 mb-6">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-accent/10 text-accent font-bold">01</span>
+              <div>
+                <h3 className="font-display text-2xl md:text-3xl font-bold">Client Concepts</h3>
+                <p className="text-gray-600 text-sm">Designed to turn social media visitors into paying customers.</p>
+              </div>
             </div>
-            <div className="flex flex-wrap gap-2">
-              {filters.map(f => (
-                <button key={f} onClick={() => setActiveFilter(f)} className={`px-4 py-2 rounded-full text-sm font-medium border transition ${activeFilter === f ? 'bg-accent text-white border-accent' : 'bg-white border-black/10 hover:border-accent/40'}`}>{f}</button>
+            <div className="grid md:grid-cols-2 gap-6">
+              {clientProjects.map((p) => (
+                <article key={p.title} className={`reveal-project group rounded-3xl overflow-hidden border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${p.dark ? 'bg-cardDark text-white border-white/10' : 'bg-white text-ink border-black/10'}`}>
+                  <div className="p-4 md:p-5">
+                    <DeviceFrame dark={p.dark} title={p.title} />
+                  </div>
+                  <div className="p-6 md:p-7 pt-0 md:pt-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-4">
+                      <span className="inline-flex items-center rounded-full bg-emerald-500/15 text-emerald-600 border border-emerald-500/20 px-2.5 py-1 text-xs font-semibold">Mobile-Ready</span>
+                      {p.tags.filter(t => t !== 'Mobile-Ready').map(t => <span key={t} className={`text-xs px-2.5 py-1 rounded-full border ${p.dark ? 'border-white/15 bg-white/5 text-white/80' : 'border-black/10 bg-light text-gray-700'}`}>{t}</span>)}
+                    </div>
+                    <h4 className="font-display text-2xl font-bold mb-2">{p.title}</h4>
+                    <p className={`${p.dark ? 'text-white/75' : 'text-gray-700'} mb-5 leading-relaxed`}>{p.desc}</p>
+                    <div className="flex flex-wrap gap-3">
+                      <a href={p.liveUrl} target={p.liveUrl !== '#' ? '_blank' : undefined} rel={p.liveUrl !== '#' ? 'noopener noreferrer' : undefined} onClick={(e) => { if (p.liveUrl === '#') { e.preventDefault(); setSelectedProject(p); } }} className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 font-semibold transition ${p.dark ? 'bg-white text-ink hover:bg-gray-100' : 'bg-accent text-white hover:bg-accentHover'}`}>
+                        View Live Demo <ExternalLink size={15} />
+                      </a>
+                      <button onClick={() => setSelectedProject(p)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2.5 font-semibold border transition ${p.dark ? 'border-white/20 hover:bg-white/10' : 'border-black/10 hover:border-accent/40 hover:text-accent'}`}>
+                        Project Details
+                      </button>
+                    </div>
+                  </div>
+                </article>
               ))}
             </div>
           </div>
 
-          <div className="space-y-6">
-            {filteredProjects.map((p, idx) => (
-              <div key={p.title} className={`reveal-project rounded-3xl overflow-hidden border ${p.dark ? 'bg-cardDark text-white border-white/10' : 'bg-white text-ink border-black/10'} shadow-sm transition-transform duration-300 hover:-translate-y-1`}>
-                <div className="grid md:grid-cols-2 gap-0">
-                  <div className={`p-6 md:p-8 lg:p-10 ${idx % 2 === 1 ? 'md:order-2' : ''}`}>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {p.tags.map(t => <span key={t} className={`text-xs px-2.5 py-1 rounded-full border ${p.dark ? 'border-white/15 bg-white/5' : 'border-black/10 bg-light'}`}>{t}</span>)}
-                    </div>
-                    <h3 className="font-display text-2xl md:text-3xl font-bold mb-3">{p.title}</h3>
-                    <p className={`${p.dark ? 'text-white/75' : 'text-gray-700'} mb-6 leading-relaxed`}>{p.desc}</p>
-                    <div className="flex flex-wrap gap-3">
-                      <motion.button whileHover={{ scale: 1.03, y: -1 }} whileTap={{ scale: 0.98 }} onClick={() => setSelectedProject(p)} className={`inline-flex items-center gap-2 rounded-full px-4 py-2 font-semibold ${p.dark ? 'bg-white text-ink hover:bg-gray-100' : 'bg-accent text-white hover:bg-accentHover'} transition`}>
-                        View Case Study <ArrowRight size={16} />
-                      </motion.button>
-                      {p.liveUrl && (
-                        <a href={p.liveUrl} target="_blank" rel="noopener noreferrer" className={`inline-flex items-center gap-2 rounded-full px-4 py-2 font-semibold border transition ${p.dark ? 'border-white/20 hover:bg-white/10' : 'border-black/10 hover:border-accent/40 hover:text-accent'}`}>
-                          Live Preview <ExternalLink size={15} />
-                        </a>
-                      )}
-                    </div>
-                  </div>
-                  <div className={`p-4 md:p-6 ${idx % 2 === 1 ? 'md:order-1' : ''}`}>
-                    <ProjectPreview title={p.title} />
-                  </div>
-                </div>
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <span className="inline-flex h-10 w-10 items-center justify-center rounded-full bg-[#38bdf8]/15 text-[#38bdf8] font-bold">02</span>
+              <div>
+                <h3 className="font-display text-2xl md:text-3xl font-bold">Flagship Engineering</h3>
+                <p className="text-gray-600 text-sm">Deep technical builds that show what’s possible beyond templates.</p>
               </div>
-            ))}
+            </div>
+            <div className="space-y-6">
+              {flagshipProjects.map((p) => (
+                <article key={p.title} className={`reveal-project rounded-3xl overflow-hidden border shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl ${p.dark ? 'bg-[#0b0f17] text-white border-[#38bdf8]/20' : 'bg-white text-ink border-black/10'} ${p.featured ? 'ring-1 ring-[#38bdf8]/30' : ''}`}>
+                  <div className="grid md:grid-cols-2 gap-0">
+                    <div className="p-6 md:p-8 lg:p-10">
+                      {p.featured && <span className="inline-flex items-center rounded-full bg-[#38bdf8]/15 text-[#38bdf8] border border-[#38bdf8]/30 px-3 py-1 text-xs font-semibold mb-4">Flagship Spotlight</span>}
+                      <div className="flex flex-wrap gap-2 mb-4">
+                        {p.tags.map(t => <span key={t} className={`text-xs px-2.5 py-1 rounded-full border ${p.dark ? 'border-[#38bdf8]/25 bg-[#38bdf8]/10 text-[#93c5fd]' : 'border-black/10 bg-light text-gray-700'}`}>{t}</span>)}
+                      </div>
+                      <h4 className="font-display text-2xl md:text-3xl font-bold mb-3">{p.title}</h4>
+                      <p className={`${p.dark ? 'text-white/75' : 'text-gray-700'} mb-6 leading-relaxed`}>{p.desc}</p>
+                      <div className="flex flex-wrap gap-3">
+                        <a href={p.liveUrl} target={p.liveUrl !== '#' ? '_blank' : undefined} rel={p.liveUrl !== '#' ? 'noopener noreferrer' : undefined} onClick={(e) => { if (p.liveUrl === '#') e.preventDefault(); }} className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold transition ${p.dark ? 'bg-[#38bdf8] text-[#07090e] hover:bg-sky-300' : 'bg-accent text-white hover:bg-accentHover'}`}>
+                          {p.ctaLabel || 'View Live Project'} <ExternalLink size={15} />
+                        </a>
+                        <button onClick={() => setSelectedProject(p)} className={`inline-flex items-center gap-2 rounded-full px-5 py-2.5 font-semibold border transition ${p.dark ? 'border-white/20 hover:bg-white/10' : 'border-black/10 hover:border-accent/40 hover:text-accent'}`}>
+                          Case Study
+                        </button>
+                      </div>
+                    </div>
+                    <div className="p-4 md:p-6 bg-black/10">
+                      <ProjectPreview title={p.title} />
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
           </div>
         </div>
       </Section>
@@ -794,18 +966,48 @@ export default function App() {
         </Section>
       )}
 
+      <Section id="process" className="bg-light py-16 md:py-20 border-y border-black/5">
+        <div className="mx-auto max-w-7xl px-4 md:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <p className="text-accent font-semibold mb-2">How It Works</p>
+            <h2 className="font-display text-4xl md:text-5xl font-bold">From idea to bookings in 3 simple steps</h2>
+            <p className="mt-4 text-gray-700">A clear, fast process built for busy business owners.</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { step: '01', title: 'Share Your Business & Vision', desc: 'Send your business details, goals, references, and what you want customers to do — book, call, or buy.', icon: Mail },
+              { step: '02', title: 'Fast Custom Build (48–72 Hours)', desc: 'I design and build a clean, mobile-first website tailored to your brand with zero bloat and fast load times.', icon: Zap },
+              { step: '03', title: 'Launch & Start Getting Bookings', desc: 'We go live with clear CTAs, WhatsApp/contact flow, and a site ready to convert visitors into real customers.', icon: CheckCircle2 },
+            ].map(({ step, title, desc, icon: Icon }) => (
+              <div key={step} className="reveal-package relative rounded-2xl bg-white border border-black/10 p-6 md:p-7 shadow-sm hover:shadow-lg hover:-translate-y-1 transition-all duration-300">
+                <div className="flex items-center justify-between mb-5">
+                  <span className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-accent/10 text-accent font-display font-bold">{step}</span>
+                  <Icon size={22} className="text-accent" />
+                </div>
+                <h3 className="font-display text-xl font-bold mb-2">{title}</h3>
+                <p className="text-gray-700 leading-relaxed">{desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </Section>
+
       <Section id="contact" className="bg-dark text-white rounded-t-[2rem] md:rounded-t-[3rem] mt-8">
         <div className="mx-auto max-w-7xl px-4 md:px-8 py-16 md:py-24">
           <div className="grid lg:grid-cols-2 gap-10 items-start">
             <div>
-              <p className="text-accent font-semibold mb-3">Let’s build</p>
-              <h2 className="font-display text-4xl md:text-6xl font-bold leading-[0.95] mb-5">Got a project coming up?</h2>
-              <p className="text-white/75 text-lg max-w-xl">Tell me about your idea — web app, AI automation, or content collaboration. I’ll get back with next steps.</p>
-              <div className="mt-8 space-y-3 text-white/85">
-                <div className="flex items-center gap-3"><Mail size={18} className="text-accent" /> Available for freelance, OEM &amp; partnerships — <a href="mailto:iniakinpelu2020@gmail.com" className="underline hover:text-white">iniakinpelu2020@gmail.com</a></div>
-                <div className="flex items-center gap-3"><MapPin size={18} className="text-accent" /> Ibadan / Ile-Ife, Nigeria</div>
-                <div className="flex items-center gap-3"><Globe size={18} className="text-accent" /> Web, Cybersecurity, AI & Automation, Content</div>
+              <p className="text-accent font-semibold mb-3">Quick Quote</p>
+              <h2 className="font-display text-4xl md:text-6xl font-bold leading-[0.95] mb-5">Ready for more bookings?</h2>
+              <p className="text-white/75 text-lg max-w-xl">Tell me about your business and I’ll send you a clear plan for a fast, mobile-first website that converts your social traffic into customers.</p>
+              <div className="mt-8 grid gap-3">
+                <div className="flex items-center gap-3 text-white/85"><CheckCircle2 size={18} className="text-accent shrink-0" /> Fast 48–72 hour delivery</div>
+                <div className="flex items-center gap-3 text-white/85"><CheckCircle2 size={18} className="text-accent shrink-0" /> Mobile-first, conversion-focused design</div>
+                <div className="flex items-center gap-3 text-white/85"><CheckCircle2 size={18} className="text-accent shrink-0" /> Easy WhatsApp booking flow</div>
               </div>
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="mt-8 inline-flex w-full sm:w-auto items-center justify-center gap-2 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-[#052e16] px-6 py-3.5 font-semibold transition shadow-lg shadow-emerald-500/20">
+                Chat on WhatsApp <ExternalLink size={16} />
+              </a>
+              <p className="mt-4 text-sm text-white/50">Prefer email? <a href="mailto:iniakinpelu2020@gmail.com" className="underline hover:text-white">iniakinpelu2020@gmail.com</a></p>
             </div>
             <form onSubmit={submitContact} className="bg-white/5 border border-white/10 rounded-2xl p-5 md:p-6 backdrop-blur">
               <div className="grid gap-4">
@@ -814,12 +1016,16 @@ export default function App() {
                   <input required value={form.name} onChange={e => setForm(f => ({ ...f, name: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent" placeholder="Your name" />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1.5 text-white/80">Email</label>
-                  <input required type="email" value={form.email} onChange={e => setForm(f => ({ ...f, email: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent" placeholder="you@example.com" />
+                  <label className="block text-sm mb-1.5 text-white/80">Business Type</label>
+                  <input required value={form.businessType} onChange={e => setForm(f => ({ ...f, businessType: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent" placeholder="Spa, studio, restaurant, creator..." />
                 </div>
                 <div>
-                  <label className="block text-sm mb-1.5 text-white/80">Tell me about your project</label>
-                  <textarea required rows={5} value={form.message} onChange={e => setForm(f => ({ ...f, message: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent resize-y" placeholder="What are you building? Goals, timeline, scope..." />
+                  <label className="block text-sm mb-1.5 text-white/80">WhatsApp or Email</label>
+                  <input required value={form.contact} onChange={e => setForm(f => ({ ...f, contact: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent" placeholder="+234... or you@example.com" />
+                </div>
+                <div>
+                  <label className="block text-sm mb-1.5 text-white/80">Project Details</label>
+                  <textarea required rows={4} value={form.details} onChange={e => setForm(f => ({ ...f, details: e.target.value }))} className="w-full rounded-xl bg-white/10 border border-white/10 px-4 py-3 outline-none focus:border-accent resize-y" placeholder="What do you need? Pages, booking, gallery, timeline..." />
                 </div>
                 {formStatus && (
                   <div className={`rounded-xl px-4 py-3 text-sm border ${formStatus.type === 'success' ? 'bg-green-500/10 border-green-400/30 text-green-200' : 'bg-red-500/10 border-red-400/30 text-red-200'}`}>
@@ -827,11 +1033,11 @@ export default function App() {
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <button type="submit" disabled={sending} className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent hover:bg-accentHover disabled:opacity-60 px-5 py-3 font-semibold transition">
-                    {sending ? 'Sending...' : 'Send Message'} <Send size={16} />
+                  <button type="submit" disabled={sending} className="inline-flex items-center justify-center gap-2 rounded-xl bg-accent hover:bg-accentHover disabled:opacity-60 px-5 py-3 font-semibold transition flex-1">
+                    {sending ? 'Sending...' : 'Get My Quick Quote'} <Send size={16} />
                   </button>
-                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 hover:border-accent/60 hover:bg-white/5 px-5 py-3 font-semibold transition text-white">
-                    Or message directly on WhatsApp <ExternalLink size={16} />
+                  <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center gap-2 rounded-xl border border-white/20 hover:border-emerald-400/50 hover:bg-white/5 px-5 py-3 font-semibold transition text-white">
+                    Chat on WhatsApp <ExternalLink size={16} />
                   </a>
                 </div>
               </div>
